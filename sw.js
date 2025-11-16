@@ -1,350 +1,209 @@
-// sw.js - Service Worker with Advanced Caching Strategy
-const VERSION = '2.0.0';
-const CACHE_STATIC = `samaki-static-v${VERSION}`;
-const CACHE_DYNAMIC = `samaki-dynamic-v${VERSION}`;
-const CACHE_API = `samaki-api-v${VERSION}`;
+// sw.js - Service Worker for PWA
+// Version: 1.0.0
 
-// Static assets to cache immediately
+const CACHE_NAME = 'samaki-school-v1';
+const STATIC_CACHE = 'samaki-static-v1';
+const DYNAMIC_CACHE = 'samaki-dynamic-v1';
+
+// 📦 Files to cache immediately on install
 const STATIC_ASSETS = [
-    '/',
-    '/index.html',
-    '/tracking.html',
-    '/manifest.json',
-    'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-    'https://fonts.googleapis.com/css2?family=Battambang:wght@300;400;600;700&family=Moul&display=swap'
+  '/',
+  '/index.html',
+  '/tracking.html',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://cdn.jsdelivr.net/npm/chart.js',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
+  'https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Moul&family=Siemreap&display=swap',
+  'https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg'
 ];
 
-// Cache expiration times
-const CACHE_EXPIRY = {
-    static: 7 * 24 * 60 * 60 * 1000, // 7 days
-    dynamic: 24 * 60 * 60 * 1000,    // 1 day
-    api: 5 * 60 * 1000                // 5 minutes
-};
-
-// ==================== INSTALL ====================
+// 🔧 INSTALL EVENT - Cache static assets
 self.addEventListener('install', (event) => {
-    console.log(`🔧 [SW v${VERSION}] Installing...`);
-    
-    event.waitUntil(
-        caches.open(CACHE_STATIC)
-            .then(cache => {
-                console.log('📦 Caching static assets');
-                return cache.addAll(STATIC_ASSETS.map(url => new Request(url, { cache: 'reload' })));
-            })
-            .catch(err => {
-                console.error('❌ Failed to cache:', err);
-            })
-            .then(() => {
-                console.log('✅ Installation complete');
-                return self.skipWaiting();
-            })
-    );
+  console.log('🔧 Service Worker: Installing...');
+  
+  event.waitUntil(
+    caches.open(STATIC_CACHE)
+      .then((cache) => {
+        console.log('📦 Service Worker: Caching static assets');
+        return cache.addAll(STATIC_ASSETS);
+      })
+      .catch(err => {
+        console.error('❌ Failed to cache some assets:', err);
+      })
+      .then(() => {
+        console.log('✅ Service Worker: Installation complete');
+        return self.skipWaiting(); // Activate immediately
+      })
+  );
 });
 
-// ==================== ACTIVATE ====================
+// 🚀 ACTIVATE EVENT - Clean up old caches
 self.addEventListener('activate', (event) => {
-    console.log(`🚀 [SW v${VERSION}] Activating...`);
-    
-    event.waitUntil(
-        caches.keys()
-            .then(cacheNames => {
-                return Promise.all(
-                    cacheNames
-                        .filter(name => {
-                            return name.startsWith('samaki-') && 
-                                   !name.includes(VERSION);
-                        })
-                        .map(name => {
-                            console.log(`🗑️ Deleting old cache: ${name}`);
-                            return caches.delete(name);
-                        })
-                );
+  console.log('🚀 Service Worker: Activating...');
+  
+  event.waitUntil(
+    caches.keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames
+            .filter(name => name !== STATIC_CACHE && name !== DYNAMIC_CACHE)
+            .map(name => {
+              console.log('🗑️ Deleting old cache:', name);
+              return caches.delete(name);
             })
-            .then(() => {
-                console.log('✅ Activation complete');
-                return self.clients.claim();
-            })
-    );
+        );
+      })
+      .then(() => {
+        console.log('✅ Service Worker: Activation complete');
+        return self.clients.claim(); // Take control immediately
+      })
+  );
 });
 
-// ==================== FETCH ====================
+// 🌐 FETCH EVENT - Serve from cache or network
 self.addEventListener('fetch', (event) => {
-    const { request } = event;
-    const url = new URL(request.url);
-
-    // Skip cross-origin requests except for specific CDNs
-    if (url.origin !== self.location.origin && 
-        !url.hostname.includes('cdn.jsdelivr.net') &&
-        !url.hostname.includes('cdnjs.cloudflare.com') &&
-        !url.hostname.includes('fonts.googleapis.com') &&
-        !url.hostname.includes('fonts.gstatic.com')) {
-        return;
-    }
-
-    // API requests: Network-first with cache fallback
-    if (url.pathname.startsWith('/api/')) {
-        event.respondWith(handleAPIRequest(request));
-        return;
-    }
-
-    // Static assets: Cache-first
-    if (isStaticAsset(url)) {
-        event.respondWith(handleStaticRequest(request));
-        return;
-    }
-
-    // HTML pages: Network-first with cache fallback
-    if (request.destination === 'document') {
-        event.respondWith(handleDocumentRequest(request));
-        return;
-    }
-
-    // Other resources: Cache-first with network fallback
-    event.respondWith(handleDynamicRequest(request));
-});
-
-// ==================== REQUEST HANDLERS ====================
-
-// API: Network-first with short cache
-async function handleAPIRequest(request) {
-    const cache = await caches.open(CACHE_API);
-    
-    try {
-        const networkResponse = await fetch(request);
-        
-        if (networkResponse && networkResponse.status === 200) {
-            const responseToCache = networkResponse.clone();
-            await cache.put(request, responseToCache);
-        }
-        
-        return networkResponse;
-    } catch (error) {
-        console.log('📡 Network failed, trying cache for:', request.url);
-        const cachedResponse = await cache.match(request);
-        
-        if (cachedResponse) {
-            // Add header to indicate cached response
-            const newHeaders = new Headers(cachedResponse.headers);
-            newHeaders.set('X-Cached', 'true');
-            
-            return new Response(cachedResponse.body, {
-                status: cachedResponse.status,
-                statusText: cachedResponse.statusText,
-                headers: newHeaders
-            });
-        }
-        
-        return new Response(
+  const { request } = event;
+  const url = new URL(request.url);
+  
+  // 🚫 Skip caching for API calls (always fetch fresh)
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      fetch(request)
+        .catch(() => {
+          return new Response(
             JSON.stringify({ 
-                error: 'អ៊ីនធឺណិតមានបញ្ហា',
-                offline: true,
-                cached: false
+              error: 'អ៊ីនធឺណិតមានបញ្ហា។ សូមពិនិត្យការតភ្ជាប់របស់អ្នក',
+              offline: true 
             }),
-            {
-                status: 503,
-                headers: { 'Content-Type': 'application/json' }
+            { 
+              headers: { 'Content-Type': 'application/json' },
+              status: 503
             }
-        );
-    }
-}
-
-// Static: Cache-first with network update
-async function handleStaticRequest(request) {
-    const cache = await caches.open(CACHE_STATIC);
-    const cachedResponse = await cache.match(request);
-    
-    if (cachedResponse) {
-        // Update cache in background
-        fetch(request).then(networkResponse => {
-            if (networkResponse && networkResponse.status === 200) {
-                cache.put(request, networkResponse.clone());
-            }
-        }).catch(() => {});
-        
-        return cachedResponse;
-    }
-    
-    try {
-        const networkResponse = await fetch(request);
-        if (networkResponse && networkResponse.status === 200) {
-            await cache.put(request, networkResponse.clone());
-        }
-        return networkResponse;
-    } catch (error) {
-        return new Response('Offline', { status: 503 });
-    }
-}
-
-// Documents: Network-first with cache fallback
-async function handleDocumentRequest(request) {
-    const cache = await caches.open(CACHE_DYNAMIC);
-    
-    try {
-        const networkResponse = await fetch(request);
-        
-        if (networkResponse && networkResponse.status === 200) {
-            await cache.put(request, networkResponse.clone());
-        }
-        
-        return networkResponse;
-    } catch (error) {
-        const cachedResponse = await cache.match(request);
-        
+          );
+        })
+    );
+    return;
+  }
+  
+  // 📦 Cache-first strategy for everything else
+  event.respondWith(
+    caches.match(request)
+      .then((cachedResponse) => {
         if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        // Return offline page
-        return cache.match('/index.html');
-    }
-}
-
-// Dynamic: Cache-first with network fallback
-async function handleDynamicRequest(request) {
-    const cache = await caches.open(CACHE_DYNAMIC);
-    const cachedResponse = await cache.match(request);
-    
-    if (cachedResponse) {
-        // Refresh cache in background
-        fetch(request).then(networkResponse => {
-            if (networkResponse && networkResponse.status === 200) {
-                cache.put(request, networkResponse.clone());
-            }
-        }).catch(() => {});
-        
-        return cachedResponse;
-    }
-    
-    try {
-        const networkResponse = await fetch(request);
-        
-        if (networkResponse && networkResponse.status === 200) {
-            await cache.put(request, networkResponse.clone());
-        }
-        
-        return networkResponse;
-    } catch (error) {
-        return new Response('Resource unavailable offline', { status: 503 });
-    }
-}
-
-// ==================== HELPERS ====================
-
-function isStaticAsset(url) {
-    const staticExtensions = ['.css', '.js', '.woff', '.woff2', '.ttf', '.svg', '.png', '.jpg', '.jpeg', '.gif'];
-    const staticHosts = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
-    
-    return staticExtensions.some(ext => url.pathname.endsWith(ext)) ||
-           staticHosts.some(host => url.hostname.includes(host));
-}
-
-// ==================== MESSAGE HANDLING ====================
-self.addEventListener('message', (event) => {
-    console.log('💬 Message received:', event.data);
-    
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
-    }
-    
-    if (event.data && event.data.type === 'CLEAR_CACHE') {
-        event.waitUntil(
-            caches.keys().then(cacheNames => {
-                return Promise.all(
-                    cacheNames.map(name => caches.delete(name))
-                );
-            }).then(() => {
-                console.log('🗑️ All caches cleared');
+          console.log('✅ Serving from cache:', request.url);
+          
+          // Update cache in background
+          fetch(request)
+            .then((networkResponse) => {
+              if (networkResponse && networkResponse.status === 200) {
+                caches.open(DYNAMIC_CACHE).then((cache) => {
+                  cache.put(request, networkResponse);
+                });
+              }
             })
-        );
-    }
-    
-    if (event.data && event.data.type === 'GET_VERSION') {
-        event.ports[0].postMessage({ version: VERSION });
-    }
-});
-
-// ==================== BACKGROUND SYNC ====================
-self.addEventListener('sync', (event) => {
-    console.log('🔄 Background sync:', event.tag);
-    
-    if (event.tag === 'sync-data') {
-        event.waitUntil(syncData());
-    }
-});
-
-async function syncData() {
-    // Implement background sync logic here
-    console.log('🔄 Syncing data...');
-    return Promise.resolve();
-}
-
-// ==================== PUSH NOTIFICATIONS ====================
-self.addEventListener('push', (event) => {
-    console.log('🔔 Push notification received');
-    
-    const data = event.data ? event.data.json() : {};
-    const title = data.title || 'អនុវិទ្យាល័យសាមគ្គី';
-    const options = {
-        body: data.body || 'មានការជូនដំណឹងថ្មី',
-        icon: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg',
-        badge: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg',
-        vibrate: [200, 100, 200],
-        tag: data.tag || 'samaki-notification',
-        requireInteraction: false,
-        data: {
-            url: data.url || '/',
-            timestamp: Date.now()
+            .catch(() => {});
+          
+          return cachedResponse;
         }
-    };
-    
-    event.waitUntil(
-        self.registration.showNotification(title, options)
-    );
-});
-
-self.addEventListener('notificationclick', (event) => {
-    console.log('🖱️ Notification clicked');
-    
-    event.notification.close();
-    
-    event.waitUntil(
-        clients.openWindow(event.notification.data?.url || '/')
-    );
-});
-
-// ==================== CACHE CLEANUP ====================
-// Clean old cache entries periodically
-async function cleanupOldCaches() {
-    const caches_list = await caches.keys();
-    
-    for (const cacheName of caches_list) {
-        if (cacheName.startsWith('samaki-')) {
-            const cache = await caches.open(cacheName);
-            const requests = await cache.keys();
-            
-            for (const request of requests) {
-                const response = await cache.match(request);
-                const cacheDate = new Date(response.headers.get('date'));
-                const now = new Date();
-                const age = now - cacheDate;
-                
-                let maxAge = CACHE_EXPIRY.dynamic;
-                if (cacheName.includes('static')) maxAge = CACHE_EXPIRY.static;
-                if (cacheName.includes('api')) maxAge = CACHE_EXPIRY.api;
-                
-                if (age > maxAge) {
-                    console.log('🗑️ Removing expired cache:', request.url);
-                    await cache.delete(request);
-                }
+        
+        // Not in cache - fetch from network
+        console.log('🌐 Fetching from network:', request.url);
+        return fetch(request)
+          .then((networkResponse) => {
+            if (!networkResponse || networkResponse.status !== 200) {
+              return networkResponse;
             }
-        }
-    }
-}
-
-// Run cleanup on activation and periodically
-self.addEventListener('activate', (event) => {
-    event.waitUntil(cleanupOldCaches());
+            
+            // Cache the new response
+            const responseToCache = networkResponse.clone();
+            caches.open(DYNAMIC_CACHE).then((cache) => {
+              cache.put(request, responseToCache);
+            });
+            
+            return networkResponse;
+          })
+          .catch(() => {
+            // Network failed and not in cache
+            if (request.destination === 'document') {
+              return caches.match('/index.html');
+            }
+            
+            return new Response('Offline - មិនមានអ៊ីនធឺណិត', {
+              status: 503,
+              statusText: 'Service Unavailable',
+              headers: new Headers({
+                'Content-Type': 'text/plain; charset=utf-8'
+              })
+            });
+          });
+      })
+  );
 });
 
-console.log(`✅ [SW v${VERSION}] Service Worker loaded successfully!`);
+// 💬 MESSAGE EVENT - Handle messages from the app
+self.addEventListener('message', (event) => {
+  console.log('💬 Service Worker received message:', event.data);
+  
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    console.log('⏩ Skipping waiting...');
+    self.skipWaiting();
+  }
+  
+  if (event.data && event.data.type === 'CLEAR_CACHE') {
+    console.log('🗑️ Clearing all caches...');
+    event.waitUntil(
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map(name => caches.delete(name))
+        );
+      })
+    );
+  }
+});
+
+// 🔄 SYNC EVENT - Background sync (future enhancement)
+self.addEventListener('sync', (event) => {
+  console.log('🔄 Background sync:', event.tag);
+  
+  if (event.tag === 'sync-attendance') {
+    event.waitUntil(
+      // Implement background sync logic here if needed
+      Promise.resolve()
+    );
+  }
+});
+
+// 🔔 PUSH EVENT - Push notifications (future enhancement)
+self.addEventListener('push', (event) => {
+  console.log('🔔 Push notification received');
+  
+  const options = {
+    body: event.data ? event.data.text() : 'ការជូនដំណឹងថ្មី',
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg',
+    badge: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg',
+    vibrate: [200, 100, 200],
+    tag: 'samaki-notification',
+    requireInteraction: false,
+    data: {
+      url: '/'
+    }
+  };
+  
+  event.waitUntil(
+    self.registration.showNotification('អនុវិទ្យាល័យសាមគ្គី', options)
+  );
+});
+
+// 🖱️ NOTIFICATION CLICK - Handle notification clicks
+self.addEventListener('notificationclick', (event) => {
+  console.log('🖱️ Notification clicked');
+  
+  event.notification.close();
+  
+  event.waitUntil(
+    clients.openWindow(event.notification.data?.url || '/')
+  );
+});
+
+console.log('🎉 Service Worker loaded successfully!');
