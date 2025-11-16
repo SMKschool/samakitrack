@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="km">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>តាមដានពិន្ទុសិស្ស - អនុវិទ្យាល័យសាមគ្គី</title>
-    <link rel="icon" type="image/svg+xml"
-        href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
-    <link rel="apple-touch-icon"
-        href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
+    <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2C6E49">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Moul&family=Siemreap&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Moul&family=Siemreap&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary-green: #2C6E49;
@@ -46,28 +44,25 @@
             font-family: 'Battambang', sans-serif;
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 15px;
         }
 
+        /* ==================== LOGIN ==================== */
         .login-container {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 450px;
-            width: 100%;
-            padding: 40px;
-            animation: slideUp 0.5s ease;
+            max-width: 480px;
+            margin: 40px auto;
+            padding: 45px 35px;
+            animation: fadeInUp 0.6s ease;
         }
 
-        @keyframes slideUp {
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -76,90 +71,95 @@
 
         .login-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
         .login-header img {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 15px;
+            width: 90px;
+            height: 90px;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
         }
 
         .login-header h1 {
             color: var(--primary-green);
             font-family: 'Moul', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin-bottom: 12px;
         }
 
         .login-header p {
             color: #6b7280;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: var(--dark-text);
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.05rem;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 16px 18px;
             border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-family: 'Battambang', sans-serif;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
         }
 
         .remember-me {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            gap: 8px;
+            margin-bottom: 25px;
+            gap: 10px;
         }
 
         .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
+            accent-color: var(--primary-green);
         }
 
         .remember-me label {
             margin: 0;
             cursor: pointer;
             color: var(--dark-text);
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         .btn-login {
             width: 100%;
-            padding: 14px;
+            padding: 18px;
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             font-family: 'Battambang', sans-serif;
+            box-shadow: 0 4px 12px rgba(44, 110, 73, 0.3);
         }
 
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(44, 110, 73, 0.3);
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(44, 110, 73, 0.4);
         }
 
         .btn-login:disabled {
@@ -169,21 +169,25 @@
 
         .error-message,
         .success-message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 25px;
             text-align: center;
             display: none;
+            font-size: 1.05rem;
+            font-weight: 500;
         }
 
         .error-message {
             background-color: #fee;
             color: var(--absent-color);
+            border: 2px solid #fcc;
         }
 
         .success-message {
             background-color: #e8f5e9;
             color: var(--present-color);
+            border: 2px solid #c8e6c9;
         }
 
         .error-message.show,
@@ -193,27 +197,18 @@
         }
 
         @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-10px);
-            }
-
-            75% {
-                transform: translateX(10px);
-            }
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
+        /* ==================== DASHBOARD ==================== */
         .dashboard-container {
             display: none;
             background: #f3f4f6;
             min-height: 100vh;
+            margin: -15px;
             padding: 0;
-            width: 100%;
         }
 
         .dashboard-container.show {
@@ -223,390 +218,577 @@
         .dashboard-header {
             background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             color: white;
-            padding: 20px;
-            box-shadow: var(--shadow);
+            padding: 25px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .dashboard-header h2 {
             font-family: 'Moul', sans-serif;
-            margin: 0 0 10px 0;
+            margin: 0 0 12px 0;
+            font-size: 1.6rem;
+        }
+
+        .dashboard-header p {
+            margin: 0;
+            opacity: 0.95;
+            font-size: 1.1rem;
         }
 
         .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             color: white;
-            border: 2px solid white;
-            padding: 8px 20px;
-            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 12px 24px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Battambang', sans-serif;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
+            font-weight: 600;
         }
 
         .logout-btn:hover {
             background: white;
             color: var(--primary-green);
+            border-color: white;
         }
 
         .dashboard-content {
-            padding: 20px;
-            max-width: 1200px;
+            padding: 20px 15px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .student-card {
             background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
+            border-radius: 20px;
+            padding: 30px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .student-card h3 {
             color: var(--primary-blue);
-            margin-bottom: 15px;
-            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
+        .student-card h4 {
+            color: var(--primary-green);
+            margin: 30px 0 20px 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary-green);
+        }
+
+        /* Info Grid - ធំជាងសម្រាប់មនុស្សចាស់ */
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
         }
 
         .info-item {
-            padding: 12px;
-            background: var(--light-bg);
-            border-radius: 8px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border-radius: 16px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
         }
 
         .info-item strong {
             display: block;
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
+            color: #4b5563;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .info-item span {
-            font-size: 1.1rem;
+            font-size: 1.4rem;
             color: var(--dark-text);
+            font-weight: 700;
         }
 
+        /* Month Selector - ធំជាង */
         .month-selector-dash {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .month-selector-dash label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark-text);
         }
 
         .month-selector-dash select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 18px 20px;
+            border: 3px solid var(--border-color);
+            border-radius: 14px;
+            font-size: 1.2rem;
             font-family: 'Battambang', sans-serif;
-            transition: border-color 0.3s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: white;
         }
 
         .month-selector-dash select:focus {
             outline: none;
             border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
         }
 
+        /* Table - ធំជាង ងាយមើល */
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
-        th,
-        td {
-            padding: 12px;
+        th, td {
+            padding: 18px 16px;
             text-align: left;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid #f3f4f6;
+            font-size: 1.15rem;
         }
 
         th {
-            background-color: #f0f7ff;
-            color: var(--primary-blue);
-            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary-blue), #1e40af);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f0f9ff;
+            transform: scale(1.01);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        td:nth-child(2) {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary-blue);
+        }
+
+        /* Rank Badges - ធំជាង */
         .rank {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 1.1rem;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .rank-1 {
-            background-color: var(--rank-gold);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .rank-2 {
-            background-color: var(--rank-silver);
+            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .rank-3 {
-            background-color: var(--rank-bronze);
+            background: linear-gradient(135deg, #CD7F32, #A0522D);
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .rank-other {
-            background-color: var(--rank-normal);
+            background: linear-gradient(135deg, #6c757d, #5a6268);
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        /* Buttons - ធំជាង ងាយចុច */
         .attendance-btn,
         .schedule-btn {
-            background-color: var(--primary-blue);
-            color: white;
+            padding: 18px 32px;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Battambang', sans-serif;
-            margin-top: 20px;
-            margin-right: 10px;
+            margin-top: 25px;
+            margin-right: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .attendance-btn {
+            background: linear-gradient(135deg, var(--primary-blue), #1e40af);
+            color: white;
         }
 
         .schedule-btn {
-            background-color: var(--secondary-green);
+            background: linear-gradient(135deg, var(--secondary-green), #2C6E49);
+            color: white;
         }
 
-        .attendance-btn:hover {
-            background-color: #1648b7;
-            transform: translateY(-2px);
-        }
-
+        .attendance-btn:hover,
         .schedule-btn:hover {
-            background-color: #3d7a57;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
+        /* Attendance Section - ងាយមើល */
         .attendance-section,
         .schedule-section {
             display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background-color: var(--light-bg);
-            border-radius: 8px;
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f0f9ff, #ffffff);
+            border-radius: 20px;
+            border: 3px solid #dbeafe;
         }
 
         .attendance-section.show,
         .schedule-section.show {
             display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .attendance-section h4,
         .schedule-section h4 {
             color: var(--primary-blue);
-            margin-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
+        /* Attendance List - ធំជាង */
         .attendance-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            gap: 16px;
         }
 
         .attendance-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            border-radius: 6px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .attendance-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
         }
 
         .attendance-date {
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: var(--dark-text);
         }
 
         .attendance-status {
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .attendance-present {
             background-color: var(--present-color);
             color: white;
+            border-left-color: var(--present-color);
         }
 
         .attendance-absent {
             background-color: var(--absent-color);
             color: white;
+            border-left-color: var(--absent-color);
         }
 
         .attendance-excused {
-            background-color: #ffa500;
+            background-color: #ff9800;
             color: white;
+            border-left-color: #ff9800;
         }
 
+        /* Schedule Table - ងាយមើល */
         .schedule-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.95rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            font-size: 1.05rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .schedule-table th {
-            background-color: var(--primary-green);
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             color: white;
-            padding: 10px 8px;
+            padding: 16px 12px;
             text-align: center;
-            font-weight: 600;
-            border: 1px solid #ddd;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .schedule-table td {
-            padding: 10px 8px;
+            padding: 16px 12px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 2px solid #e5e7eb;
             background-color: white;
+            font-size: 1.05rem;
         }
 
         .schedule-table .time-col {
-            background-color: #f0f7ff;
-            font-weight: 600;
+            background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+            font-weight: 700;
             color: var(--primary-blue);
             white-space: nowrap;
+            font-size: 1.1rem;
         }
 
         .schedule-table .subject-cell {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--dark-text);
         }
 
         .schedule-table .empty-cell {
-            color: #999;
+            color: #9ca3af;
             font-style: italic;
         }
 
         .schedule-table .morning-session {
-            background-color: #fff8e1;
+            background-color: #fef3c7;
         }
 
         .schedule-table .afternoon-session {
-            background-color: #e8f5e9;
+            background-color: #dcfce7;
         }
 
         .session-divider {
-            background-color: #e0e0e0 !important;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
             font-weight: 700;
-            color: #333;
+            color: white !important;
             text-align: center;
-            padding: 8px;
+            padding: 14px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        /* Loading Spinner */
         .loading-spinner {
             text-align: center;
-            padding: 40px;
+            padding: 50px;
         }
 
         .loading-spinner i {
             color: var(--primary-green);
             animation: spin 1s linear infinite;
+            font-size: 3rem;
+        }
+
+        .loading-spinner p {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #6b7280;
+            font-weight: 600;
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
+        /* Session Info */
         .session-info {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 3px solid #fbbf24;
+            color: #78350f;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
             text-align: center;
+            box-shadow: 0 3px 10px rgba(251, 191, 36, 0.2);
         }
 
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
             }
 
             .login-container {
-                padding: 30px 20px;
+                padding: 35px 25px;
+                margin: 20px auto;
             }
 
-            .dashboard-container {
-                padding: 0;
+            .login-header h1 {
+                font-size: 1.7rem;
+            }
+
+            .dashboard-header {
+                padding: 20px 15px;
+            }
+
+            .dashboard-header h2 {
+                font-size: 1.4rem;
             }
 
             .dashboard-content {
-                padding: 15px;
-            }
-
-            .info-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
-            }
-
-            .info-item {
-                background-color: #34ffbb3e;
+                padding: 15px 10px;
             }
 
             .student-card {
-                padding: 20px;
+                padding: 25px 20px;
             }
 
-            .attendance-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .info-item {
+                padding: 16px;
+            }
+
+            .info-item span {
+                font-size: 1.2rem;
             }
 
             table {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
 
-            th,
-            td {
-                padding: 8px;
+            th, td {
+                padding: 14px 10px;
+                font-size: 1.05rem;
             }
 
             .schedule-table {
-                font-size: 0.85rem;
+                font-size: 0.95rem;
             }
 
             .schedule-table th,
             .schedule-table td {
-                padding: 6px 4px;
+                padding: 12px 8px;
             }
 
             .attendance-btn,
             .schedule-btn {
                 width: 100%;
                 margin-right: 0;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
+                padding: 16px 24px;
+                font-size: 1.1rem;
+            }
+
+            .attendance-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 16px;
+            }
+
+            .attendance-status {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Extra Small Devices */
+        @media (max-width: 480px) {
+            .login-header img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-group input {
+                font-size: 1rem;
+                padding: 14px 16px;
+            }
+
+            .btn-login {
+                font-size: 1.1rem;
+                padding: 16px;
+            }
+
+            .student-card h3 {
+                font-size: 1.4rem;
+            }
+
+            .student-card h4 {
+                font-size: 1.2rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 
 <body>
+    <!-- LOGIN SCREEN -->
     <div class="login-container" id="loginContainer">
         <div class="login-header">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg"
-                alt="Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg" alt="Logo">
             <h1>ចូលប្រព័ន្ធតាមដាន</h1>
             <p>អនុវិទ្យាល័យសាមគ្គី</p>
         </div>
@@ -643,12 +825,13 @@
         </form>
     </div>
 
+    <!-- DASHBOARD -->
     <div class="dashboard-container" id="dashboardContainer">
         <div class="dashboard-header">
             <div class="d-flex justify-content-between align-items-center flex-wrap">
                 <div>
                     <h2><i class="fas fa-chart-line"></i> ព័ត៌មានលម្អិតសិស្ស</h2>
-                    <p id="welcomeText" style="margin: 0; opacity: 0.9;"></p>
+                    <p id="welcomeText"></p>
                 </div>
                 <button class="logout-btn" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i> ចាកចេញ
@@ -698,10 +881,8 @@
             studentName: null
         };
 
-        // ✅ ឈ្មោះ Sheet ដែលត្រូវ EXCLUDE (មិនបង្ហាញ)
         const EXCLUDED_SHEETS = ['userLogin', 'ClassTimes', 'Notifications', 'Calendar', 'forTeacher'];
 
-        // ✅ Function filter sheets ដែលត្រឹមត្រូវ
         function getScoreSheets(allSheets) {
             return allSheets.filter(sheet => 
                 !sheet.startsWith('Att-') && 
@@ -794,7 +975,6 @@
             }
         }
 
-        // ✅ មិនប្រើ cache សម្រាប់ទិន្នន័យថ្មី
         async function fetchSheetData(sheetName) {
             try {
                 const response = await fetch(`/api/sheets?sheet=${encodeURIComponent(sheetName)}&t=${Date.now()}`);
@@ -998,12 +1178,12 @@
 
         async function loadStudentData(month) {
             const studentInfo = document.getElementById('studentInfo');
-            studentInfo.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>កំពុងផ្ទុក...</p></div>';
+            studentInfo.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>កំពុងផ្ទុក...</p></div>';
 
             const data = await fetchSheetData(month);
 
             if (data.length === 0) {
-                studentInfo.innerHTML = '<p style="color: var(--absent-color); text-align: center;">មិនអាចទាញយកទិន្នន័យបានទេ</p>';
+                studentInfo.innerHTML = '<p style="color: var(--absent-color); text-align: center; font-size: 1.2rem; padding: 30px;">មិនអាចទាញយកទិន្នន័យបានទេ</p>';
                 return;
             }
 
@@ -1011,7 +1191,7 @@
             const studentRow = data.find(row => row[0] === AppState.currentStudentId);
 
             if (!studentRow) {
-                studentInfo.innerHTML = '<p style="color: var(--absent-color); text-align: center;">មិនមានទិន្នន័យសម្រាប់ខែនេះ</p>';
+                studentInfo.innerHTML = '<p style="color: var(--absent-color); text-align: center; font-size: 1.2rem; padding: 30px;">មិនមានទិន្នន័យសម្រាប់ខែនេះ</p>';
                 return;
             }
 
@@ -1026,27 +1206,25 @@
             studentInfo.innerHTML = `
                 <h3><i class="fas fa-user-circle"></i> ${studentRow[1] || 'មិនមានឈ្មោះ'}</h3>
                 <div class="info-grid">
-                    <div class="info-item">
+                    <div class="info-item" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">
                         <strong><i class="fas fa-id-card"></i> អត្តលេខ</strong>
                         <span>${studentRow[0]}</span>
                     </div>
-                    <div class="info-item">
+                    <div class="info-item" style="background: linear-gradient(135deg, #fce7f3, #fbcfe8);">
                         <strong><i class="fas fa-venus-mars"></i> ភេទ</strong>
                         <span>${studentRow[2] || 'មិនមាន'}</span>
                     </div>
-                    <div class="info-item">
+                    <div class="info-item" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0);">
                         <strong><i class="fas fa-school"></i> ថ្នាក់</strong>
                         <span>${studentRow[3] || 'មិនមាន'}</span>
                     </div>
-                    <div class="info-item">
+                    <div class="info-item" style="background: linear-gradient(135deg, #fef3c7, #fde68a);">
                         <strong><i class="fas fa-calendar-alt"></i> ខែ</strong>
                         <span>${month}</span>
                     </div>
                 </div>
 
-                <h4 style="color: var(--primary-blue); margin-top: 20px; margin-bottom: 15px;">
-                    <i class="fas fa-clipboard-list"></i> ពិន្ទុតាមមុខវិជ្ជា
-                </h4>
+                <h4><i class="fas fa-clipboard-list"></i> ពិន្ទុតាមមុខវិជ្ជា</h4>
                 <table>
                     <thead>
                         <tr>
@@ -1057,8 +1235,8 @@
                     <tbody>
                         ${headers.slice(4, 25).map((subject, index) => `
                             <tr>
-                                <td>${subject || 'មិនមាន'}</td>
-                                <td style="text-align: center; font-weight: 600;">
+                                <td style="font-weight: 600;">${subject || 'មិនមាន'}</td>
+                                <td style="text-align: center;">
                                     ${studentRow[4 + index] || '-'}
                                 </td>
                             </tr>
@@ -1066,26 +1244,26 @@
                     </tbody>
                 </table>
 
-                <div class="info-grid" style="margin-top: 20px;">
-                    <div class="info-item" style="background: #e8f5e9;">
+                <div class="info-grid" style="margin-top: 30px;">
+                    <div class="info-item" style="background: linear-gradient(135deg, #dcfce7, #86efac);">
                         <strong><i class="fas fa-plus-circle"></i> ពិន្ទុសរុប</strong>
-                        <span style="font-size: 1.3rem; font-weight: 700; color: #2e7d32;">
+                        <span style="color: #15803d;">
                             ${studentRow[25] || '-'}
                         </span>
                     </div>
-                    <div class="info-item" style="background: #e3f2fd;">
+                    <div class="info-item" style="background: linear-gradient(135deg, #dbeafe, #93c5fd);">
                         <strong><i class="fas fa-chart-line"></i> មធ្យមភាគ</strong>
-                        <span style="font-size: 1.3rem; font-weight: 700; color: #1565c0;">
+                        <span style="color: #1e40af;">
                             ${studentRow[26] || '-'}
                         </span>
                     </div>
-                    <div class="info-item" style="background: #fff3e0;">
+                    <div class="info-item" style="background: linear-gradient(135deg, #fed7aa, #fdba74);">
                         <strong><i class="fas fa-star"></i> និទ្ទេសរួម</strong>
-                        <span style="font-size: 1.3rem; font-weight: 700; color: #ef6c00;">
+                        <span style="color: #c2410c;">
                             ${studentRow[27] || '-'}
                         </span>
                     </div>
-                    <div class="info-item">
+                    <div class="info-item" style="background: linear-gradient(135deg, #fef3c7, #fde047);">
                         <strong><i class="fas fa-trophy"></i> ចំណាត់ថ្នាក់</strong>
                         <span class="rank ${rankClass}">
                             ${studentRow[28] || '-'} / ${totalStudentsInClass}
@@ -1099,7 +1277,7 @@
             const attendanceSection = document.getElementById('attendanceSection');
             const attendanceSheet = `Att-${AppState.currentMonth}`;
 
-            attendanceSection.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>កំពុងផ្ទុកទិន្នន័យវត្តមាន...</p></div>';
+            attendanceSection.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>កំពុងផ្ទុកទិន្នន័យវត្តមាន...</p></div>';
             attendanceSection.classList.add('show');
 
             const data = await fetchSheetData(attendanceSheet);
@@ -1107,7 +1285,7 @@
             if (data.length === 0) {
                 attendanceSection.innerHTML = `
                     <h4><i class="fas fa-clipboard-check"></i> វត្តមានសិស្ស - ខែ ${AppState.currentMonth}</h4>
-                    <p style="color: var(--absent-color); text-align: center;">
+                    <p style="color: var(--absent-color); text-align: center; font-size: 1.2rem; padding: 30px;">
                         <i class="fas fa-exclamation-circle"></i> មិនមានទិន្នន័យវត្តមានសម្រាប់ខែនេះ
                     </p>
                 `;
@@ -1121,7 +1299,7 @@
             if (!studentRow || headers.length === 0) {
                 attendanceSection.innerHTML = `
                     <h4><i class="fas fa-clipboard-check"></i> វត្តមានសិស្ស - ខែ ${AppState.currentMonth}</h4>
-                    <p style="color: var(--absent-color); text-align: center;">
+                    <p style="color: var(--absent-color); text-align: center; font-size: 1.2rem; padding: 30px;">
                         <i class="fas fa-exclamation-circle"></i> មិនមានទិន្នន័យវត្តមានសម្រាប់សិស្សនេះ
                     </p>
                 `;
@@ -1152,7 +1330,7 @@
                 }
 
                 return `
-                    <div class="attendance-item">
+                    <div class="attendance-item ${className}">
                         <span class="attendance-date"><i class="fas fa-calendar-day"></i> ${header}</span>
                         <span class="attendance-status ${className}">${status}</span>
                     </div>
@@ -1165,28 +1343,28 @@
             attendanceSection.innerHTML = `
                 <h4><i class="fas fa-clipboard-check"></i> វត្តមានសិស្ស - ខែ ${AppState.currentMonth}</h4>
                 
-                <div class="info-grid" style="margin-bottom: 20px;">
-                    <div class="info-item" style="background: #e8f5e9;">
+                <div class="info-grid" style="margin-bottom: 30px;">
+                    <div class="info-item" style="background: linear-gradient(135deg, #dcfce7, #86efac);">
                         <strong><i class="fas fa-check-circle"></i> មករៀន</strong>
-                        <span style="font-size: 1.5rem; font-weight: 700; color: #2e7d32;">
+                        <span style="color: #15803d;">
                             ${presentCount} ថ្ងៃ
                         </span>
                     </div>
-                    <div class="info-item" style="background: #ffebee;">
+                    <div class="info-item" style="background: linear-gradient(135deg, #fecaca, #fca5a5);">
                         <strong><i class="fas fa-times-circle"></i> គ្មានច្បាប់</strong>
-                        <span style="font-size: 1.5rem; font-weight: 700; color: #c62828;">
+                        <span style="color: #991b1b;">
                             ${absentCount} ថ្ងៃ
                         </span>
                     </div>
-                    <div class="info-item" style="background: #fff3e0;">
+                    <div class="info-item" style="background: linear-gradient(135deg, #fed7aa, #fdba74);">
                         <strong><i class="fas fa-exclamation-circle"></i> សុំច្បាប់</strong>
-                        <span style="font-size: 1.5rem; font-weight: 700; color: #ef6c00;">
+                        <span style="color: #c2410c;">
                             ${excusedCount} ថ្ងៃ
                         </span>
                     </div>
-                    <div class="info-item" style="background: #e3f2fd;">
+                    <div class="info-item" style="background: linear-gradient(135deg, #dbeafe, #93c5fd);">
                         <strong><i class="fas fa-percentage"></i> អត្រាវត្តមាន</strong>
-                        <span style="font-size: 1.5rem; font-weight: 700; color: #1565c0;">
+                        <span style="color: #1e40af;">
                             ${attendanceRate}%
                         </span>
                     </div>
@@ -1201,7 +1379,7 @@
         async function loadScheduleData() {
             const scheduleSection = document.getElementById('scheduleSection');
 
-            scheduleSection.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>កំពុងផ្ទុកកាលវិភាគសិក្សា...</p></div>';
+            scheduleSection.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i><p>កំពុងផ្ទុកកាលវិភាគសិក្សា...</p></div>';
             scheduleSection.classList.add('show');
 
             const data = await fetchSheetData('ClassTimes');
@@ -1209,7 +1387,7 @@
             if (data.length === 0) {
                 scheduleSection.innerHTML = `
                     <h4><i class="fas fa-calendar-week"></i> កាលវិភាគសិក្សា</h4>
-                    <p style="color: var(--absent-color); text-align: center;">
+                    <p style="color: var(--absent-color); text-align: center; font-size: 1.2rem; padding: 30px;">
                         <i class="fas fa-exclamation-circle"></i> មិនមានទិន្នន័យកាលវិភាគ
                     </p>
                 `;
@@ -1222,7 +1400,7 @@
             if (!classRow) {
                 scheduleSection.innerHTML = `
                     <h4><i class="fas fa-calendar-week"></i> កាលវិភាគសិក្សា</h4>
-                    <p style="color: var(--absent-color); text-align: center;">
+                    <p style="color: var(--absent-color); text-align: center; font-size: 1.2rem; padding: 30px;">
                         <i class="fas fa-exclamation-circle"></i> មិនមានកាលវិភាគសម្រាប់ថ្នាក់ ${studentClass}
                     </p>
                 `;
@@ -1239,8 +1417,8 @@
                     <table class="schedule-table">
                         <thead>
                             <tr>
-                                <th style="min-width: 80px;">ពេលវេលា</th>
-                                ${days.map(day => `<th style="min-width: 100px;">${day}</th>`).join('')}
+                                <th style="min-width: 90px;">ពេលវេលា</th>
+                                ${days.map(day => `<th style="min-width: 110px;">${day}</th>`).join('')}
                             </tr>
                         </thead>
                         <tbody>
@@ -1292,8 +1470,13 @@
 
             scheduleSection.innerHTML = scheduleHTML;
         }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('✅ Service Worker registered'))
+                .catch(err => console.log('❌ Service Worker failed:', err));
+        }
     </script>
 </body>
-
 </html>
-
