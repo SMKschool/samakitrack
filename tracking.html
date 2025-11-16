@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>តាមដានសិស្ស - អនុវិទ្យាល័យសាមគ្គី</title>
+    
+    <!-- Icons & PWA -->
+    <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2C6E49">
+    
+    <!-- Fonts - Preload for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@300;400;600;700&family=Moul&display=swap" rel="stylesheet">
+    
+    <!-- CSS Libraries - Load async for better performance -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
+
+    <style>
+        :root {
+            --primary: #2C6E49;
+            --secondary: #4C956C;
+            --accent: #FEC868;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --light: #f9fafb;
+            --dark: #1f2937;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Battambang', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ==================== LOGIN SCREEN ==================== */
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header img {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        .login-header h1 {
+            font-family: 'Moul', sans-serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Battambang', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.1);
+        }
+
+        .form-input:disabled {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .remember-me label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Battambang', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(44, 110, 73, 0.3);
+        }
+
+        .btn-login:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .btn-login:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert-box {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.25rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-box.show {
+            display: flex;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: var(--success);
+            border: 1px solid #bbf7d0;
+        }
+
+        /* ==================== DASHBOARD ==================== */
+        .dashboard {
+            display: none;
+            background: var(--light);
+            min-height: 100vh;
+            width: 100vw;
+            margin: -1rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        /* Header */
+        .dash-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 1rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dash-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .dash-title {
+            font-family: 'Moul', sans-serif;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Battambang', sans-serif;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .student-info-bar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 12px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .student-avatar {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .student-details h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .student-meta {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Main Content */
+        .dash-content {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Month Selector */
+        .month-selector {
+            background: white;
+            padding: 1rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1rem;
+        }
+
+        .month-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .month-selector select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Battambang', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .month-selector select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 110, 73, 0.1);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 100px;
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Battambang', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            color: #6b7280;
+        }
+
+        .tab:hover {
+            background: var(--light);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        /* Section Cards */
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-text {
+            height: 20px;
+            margin-bottom: 0.75rem;
+        }
+
+        .skeleton-text:last-child {
+            width: 60%;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f9fafb, #ffffff);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Scores Table */
+        .scores-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .scores-table thead {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .scores-table th,
+        .scores-table td {
+            padding: 1rem 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .scores-table th {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .scores-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .scores-table tbody tr:hover {
+            background: var(--light);
+        }
+
+        .scores-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .score-excellent { background: #dcfce7; color: #166534; }
+        .score-good { background: #dbeafe; color: #1e40af; }
+        .score-average { background: #fef3c7; color: #92400e; }
+        .score-poor { background: #fee2e2; color: #991b1b; }
+
+        /* Attendance List */
+        .attendance-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .attendance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 10px;
+            border-left: 4px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .attendance-item:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .attendance-date {
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .attendance-status {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .status-present {
+            background: #dcfce7;
+            color: #166534;
+            border-left-color: var(--success);
+        }
+
+        .status-absent {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left-color: var(--danger);
+        }
+
+        .status-excused {
+            background: #fef3c7;
+            color: #92400e;
+            border-left-color: var(--warning);
+        }
+
+        /* Schedule Table */
+        .schedule-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            font-size: 0.85rem;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .schedule-table thead th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .schedule-table .time-col {
+            background: var(--light);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .schedule-table .subject-cell {
+            background: #f0fdf4;
+            font-weight: 500;
+        }
+
+        .schedule-table .empty-cell {
+            background: #fafafa;
+            color: #9ca3af;
+        }
+
+        .schedule-table .session-header {
+            background: #e0f2fe;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Pull to Refresh */
+        .pull-to-refresh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow);
+            z-index: 99;
+        }
+
+        .pull-to-refresh.pulling {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .dash-header {
+                padding: 1rem;
+            }
+
+            .student-info-bar {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .student-avatar {
+                margin: 0 auto;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .scores-table,
+            .schedule-table {
+                font-size: 0.8rem;
+            }
+
+            .scores-table th,
+            .scores-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .tab {
+                font-size: 0.85rem;
+                padding: 0.6rem 0.75rem;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mt-2 { margin-top: 1rem; }
+        .fw-600 { font-weight: 600; }
+        .fw-700 { font-weight: 700; }
+    </style>
+</head>
+
+<body>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg" alt="Logo">
+                <h1>តាមដានការសិក្សា</h1>
+                <p>អនុវិទ្យាល័យសាមគ្គី</p>
+            </div>
+
+            <div id="alertBox" class="alert-box">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="alertMessage"></span>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="studentId">
+                        <i class="fas fa-id-card"></i> លេខសម្គាល់សិស្ស
+                    </label>
+                    <input type="text" 
+                           id="studentId" 
+                           class="form-input" 
+                           placeholder="បញ្ចូលលេខសម្គាល់"
+                           autocomplete="off"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentName">
+                        <i class="fas fa-user"></i> ឈ្មោះសិស្ស
+                    </label>
+                    <input type="text" 
+                           id="studentName" 
+                           class="form-input" 
+                           placeholder="បញ្ចូលឈ្មោះ"
+                           autocomplete="off"
+                           required>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">ចងចាំព័ត៌មាននេះ</label>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> ចូលមើលព័ត៌មាន
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="dashboard">
+        <!-- Header -->
+        <div class="dash-header">
+            <div class="dash-header-top">
+                <div class="dash-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>ព័ត៌មានសិស្ស</span>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> ចាកចេញ
+                </button>
+            </div>
+
+            <div class="student-info-bar">
+                <div class="student-avatar" id="studentAvatar">?</div>
+                <div class="student-details">
+                    <h2 id="studentNameDisplay">...</h2>
+                    <div class="student-meta">
+                        <span><i class="fas fa-id-badge"></i> <span id="studentIdDisplay">...</span></span>
+                        <span><i class="fas fa-chalkboard"></i> <span id="studentClassDisplay">...</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="dash-content">
+            <!-- Month Selector -->
+            <div class="month-selector">
+                <label for="monthSelect">
+                    <i class="fas fa-calendar-alt"></i> ជ្រើសរើសខែ
+                </label>
+                <select id="monthSelect" onchange="onMonthChange()">
+                    <option value="November">វិច្ឆិកា</option>
+                    <option value="October">តុលា</option>
+                    <option value="September">កញ្ញា</option>
+                    <option value="August">សីហា</option>
+                    <option value="July">កក្កដា</option>
+                    <option value="June">មិថុនា</option>
+                </select>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('scores')">
+                    <i class="fas fa-chart-line"></i> ពិន្ទុ
+                </button>
+                <button class="tab" onclick="showTab('attendance')">
+                    <i class="fas fa-calendar-check"></i> វត្តមាន
+                </button>
+                <button class="tab" onclick="showTab('schedule')">
+                    <i class="fas fa-clock"></i> កាលវិភាគ
+                </button>
+            </div>
+
+            <!-- Scores Section -->
+            <div id="scoresSection" class="section active">
+                <h3><i class="fas fa-chart-bar"></i> ពិន្ទុប្រឡង</h3>
+                <div id="scoresContent">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p class="loading-text">កំពុងផ្ទុកទិន្នន័យ...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div id="attendanceSection" class="section">
+                <h3><i class="fas fa-clipboard-check"></i> វត្តមានសិស្ស</h3>
+                <div id="attendanceContent">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p class="loading-text">កំពុងផ្ទុកទិន្នន័យ...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule Section -->
+            <div id="scheduleSection" class="section">
+                <h3><i class="fas fa-calendar-week"></i> កាលវិភាគសិក្សា</h3>
+                <div id="scheduleContent">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p class="loading-text">កំពុងផ្ទុកទិន្នន័យ...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        const AppState = {
+            studentId: null,
+            studentName: null,
+            studentData: null,
+            currentMonth: 'November',
+            currentTab: 'scores',
+            cache: new Map(),
+            cacheExpiry: 5 * 60 * 1000 // 5 minutes
+        };
+
+        // ==================== CACHE HELPER ====================
+        function getCachedData(key) {
+            const cached = AppState.cache.get(key);
+            if (!cached) return null;
+            
+            const now = Date.now();
+            if (now - cached.timestamp > AppState.cacheExpiry) {
+                AppState.cache.delete(key);
+                return null;
+            }
+            
+            return cached.data;
+        }
+
+        function setCachedData(key, data) {
+            AppState.cache.set(key, {
+                data: data,
+                timestamp: Date.now()
+            });
+        }
+
+        // ==================== API FUNCTIONS ====================
+        async function fetchSheetData(sheetName) {
+            const cacheKey = `sheet_${sheetName}`;
+            const cached = getCachedData(cacheKey);
+            
+            if (cached) {
+                console.log('📦 Using cached data for:', sheetName);
+                return cached;
+            }
+
+            try {
+                const response = await fetch(`/api/sheets?sheet=${encodeURIComponent(sheetName)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const result = await response.json();
+                const data = result.values || [];
+                
+                setCachedData(cacheKey, data);
+                console.log('✅ Fetched and cached:', sheetName);
+                
+                return data;
+            } catch (error) {
+                console.error('❌ Error fetching sheet:', sheetName, error);
+                showAlert('មិនអាចទាញយកទិន្នន័យបាន', 'error');
+                return [];
+            }
+        }
+
+        // ==================== LOGIN ====================
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleLogin();
+        });
+
+        async function handleLogin() {
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            if (!studentId || !studentName) {
+                showAlert('សូមបំពេញព័ត៌មានឱ្យបានគ្រប់គ្រាន់', 'error');
+                return;
+            }
+
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> កំពុងពិនិត្យ...';
+
+            try {
+                // Fetch student data
+                const data = await fetchSheetData('StudentData');
+                
+                if (data.length === 0) {
+                    throw new Error('No data available');
+                }
+
+                // Find student
+                const studentRow = data.find(row => 
+                    row[0] === studentId && 
+                    row[1]?.toLowerCase() === studentName.toLowerCase()
+                );
+
+                if (!studentRow) {
+                    showAlert('រកមិនឃើញព័ត៌មានសិស្ស សូមពិនិត្យម្តងទៀត', 'error');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ចូលមើលព័ត៌មាន';
+                    return;
+                }
+
+                // Save login info
+                AppState.studentId = studentId;
+                AppState.studentName = studentName;
+                AppState.studentData = studentRow;
+
+                if (rememberMe) {
+                    localStorage.setItem('savedStudentId', studentId);
+                    localStorage.setItem('savedStudentName', studentName);
+                } else {
+                    localStorage.removeItem('savedStudentId');
+                    localStorage.removeItem('savedStudentName');
+                }
+
+                // Show dashboard
+                showDashboard();
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('មានបញ្ហាក្នុងការចូល សូមព្យាយាមម្តងទៀត', 'error');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ចូលមើលព័ត៌មាន';
+            }
+        }
+
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertBox.className = `alert-box alert-${type} show`;
+            alertMessage.textContent = message;
+
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 4000);
+        }
+
+        // ==================== DASHBOARD ====================
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+
+            // Update student info
+            const studentData = AppState.studentData;
+            document.getElementById('studentNameDisplay').textContent = studentData[1] || 'N/A';
+            document.getElementById('studentIdDisplay').textContent = studentData[0] || 'N/A';
+            document.getElementById('studentClassDisplay').textContent = studentData[3] || 'N/A';
+            
+            // Set avatar
+            const initial = (studentData[1] || '?')[0].toUpperCase();
+            document.getElementById('studentAvatar').textContent = initial;
+
+            // Load initial data
+            loadScoresData();
+        }
+
+        function logout() {
+            if (confirm('តើអ្នកចង់ចាកចេញពីគណនីនេះមែនទេ?')) {
+                AppState.studentId = null;
+                AppState.studentName = null;
+                AppState.studentData = null;
+                AppState.cache.clear();
+
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('loginForm').reset();
+            }
+        }
+
+        // ==================== TAB SWITCHING ====================
+        function showTab(tabName) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.tab').classList.add('active');
+
+            // Update sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const sectionMap = {
+                'scores': 'scoresSection',
+                'attendance': 'attendanceSection',
+                'schedule': 'scheduleSection'
+            };
+
+            const targetSection = document.getElementById(sectionMap[tabName]);
+            targetSection.classList.add('active');
+
+            AppState.currentTab = tabName;
+
+            // Load data if not loaded
+            if (tabName === 'attendance' && !targetSection.dataset.loaded) {
+                loadAttendanceData();
+            } else if (tabName === 'schedule' && !targetSection.dataset.loaded) {
+                loadScheduleData();
+            }
+        }
+
+        function onMonthChange() {
+            const select = document.getElementById('monthSelect');
+            AppState.currentMonth = select.value;
+
+            // Reload current tab data
+            if (AppState.currentTab === 'scores') {
+                loadScoresData();
+            } else if (AppState.currentTab === 'attendance') {
+                loadAttendanceData();
+            }
+        }
+
+        // ==================== LOAD SCORES ====================
+        async function loadScoresData() {
+            const content = document.getElementById('scoresContent');
+            const sheetName = `Score-${AppState.currentMonth}`;
+
+            content.innerHTML = '<div class="loading"><div class="spinner"></div><p class="loading-text">កំពុងផ្ទុក...</p></div>';
+
+            try {
+                const data = await fetchSheetData(sheetName);
+
+                if (data.length < 2) {
+                    content.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>មិនមានទិន្នន័យពិន្ទុសម្រាប់ខែនេះ</p></div>';
+                    return;
+                }
+
+                const headers = data[0];
+                const studentClass = AppState.studentData[3];
+                const studentRow = data.find(row => 
+                    row[0] === AppState.studentId && row[3] === studentClass
+                );
+
+                if (!studentRow) {
+                    content.innerHTML = '<div class="empty-state"><i class="fas fa-user-slash"></i><p>រកមិនឃើញពិន្ទុរបស់សិស្ស</p></div>';
+                    return;
+                }
+
+                // Calculate stats
+                const scores = {};
+                const subjects = ['គណិតវិទ្យា', 'រូបវិទ្យា', 'គីមីវិទ្យា', 'ជីវវិទ្យា', 'ភាសាខ្មែរ', 'អង់គ្លេស', 'ប្រវត្តិវិទ្យា', 'ភូមិវិទ្យា'];
+                
+                subjects.forEach((subject, index) => {
+                    const score = parseFloat(studentRow[5 + index]) || 0;
+                    scores[subject] = score;
+                });
+
+                const total = parseFloat(studentRow[25]) || 0;
+                const average = parseFloat(studentRow[26]) || 0;
+                const rank = studentRow[28] || 'N/A';
+
+                // Get total students in class for ranking
+                const classStudents = data.filter(row => row[3] === studentClass);
+                const totalStudents = classStudents.length - 1; // Exclude header
+
+                // Render
+                let html = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <span class="stat-value">${total}</span>
+                            <span class="stat-label">ពិន្ទុសរុប</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <span class="stat-value">${average}</span>
+                            <span class="stat-label">មធ្យមភាគ</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <span class="stat-value">${rank}/${totalStudents}</span>
+                            <span class="stat-label">ចំណាត់ថ្នាក់</span>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="scores-table">
+                            <thead>
+                                <tr>
+                                    <th>មុខវិជ្ជា</th>
+                                    <th style="text-align: center;">ពិន្ទុ</th>
+                                    <th style="text-align: center;">វាយតម្លៃ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                subjects.forEach(subject => {
+                    const score = scores[subject];
+                    let badge = '';
+                    let gradeClass = '';
+
+                    if (score >= 80) {
+                        badge = 'ល្អបំផុត';
+                        gradeClass = 'score-excellent';
+                    } else if (score >= 70) {
+                        badge = 'ល្អ';
+                        gradeClass = 'score-good';
+                    } else if (score >= 50) {
+                        badge = 'មធ្យម';
+                        gradeClass = 'score-average';
+                    } else {
+                        badge = 'ខ្សោយ';
+                        gradeClass = 'score-poor';
+                    }
+
+                    html += `
+                        <tr>
+                            <td style="font-weight: 500;">${subject}</td>
+                            <td style="text-align: center; font-weight: 700; font-size: 1.1rem;">${score}</td>
+                            <td style="text-align: center;">
+                                <span class="score-badge ${gradeClass}">${badge}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                content.innerHTML = html;
+                document.getElementById('scoresSection').dataset.loaded = 'true';
+
+            } catch (error) {
+                console.error('Error loading scores:', error);
+                content.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>មានបញ្ហាក្នុងការផ្ទុកទិន្នន័យ</p></div>';
+            }
+        }
+
+        // ==================== LOAD ATTENDANCE ====================
+        async function loadAttendanceData() {
+            const content = document.getElementById('attendanceContent');
+            const sheetName = `Att-${AppState.currentMonth}`;
+
+            content.innerHTML = '<div class="loading"><div class="spinner"></div><p class="loading-text">កំពុងផ្ទុក...</p></div>';
+
+            try {
+                const data = await fetchSheetData(sheetName);
+
+                if (data.length < 2) {
+                    content.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>មិនមានទិន្នន័យវត្តមានសម្រាប់ខែនេះ</p></div>';
+                    return;
+                }
+
+                const headers = data[0];
+                const studentClass = AppState.studentData[3];
+                const studentRow = data.find(row => 
+                    row[0] === AppState.studentId && row[3] === studentClass
+                );
+
+                if (!studentRow) {
+                    content.innerHTML = '<div class="empty-state"><i class="fas fa-user-slash"></i><p>រកមិនឃើញវត្តមានរបស់សិស្ស</p></div>';
+                    return;
+                }
+
+                // Count attendance
+                let present = 0, absent = 0, excused = 0;
+                const attendanceList = [];
+
+                headers.slice(4).forEach((date, index) => {
+                    const value = studentRow[4 + index];
+                    let status = '', statusClass = '';
+
+                    if (value === '1') {
+                        status = 'មករៀន';
+                        statusClass = 'status-present';
+                        present++;
+                    } else if (value === '0') {
+                        status = 'គ្មានច្បាប់';
+                        statusClass = 'status-absent';
+                        absent++;
+                    } else if (value === '3') {
+                        status = 'សុំច្បាប់';
+                        statusClass = 'status-excused';
+                        excused++;
+                    }
+
+                    if (status) {
+                        attendanceList.push({ date, status, statusClass });
+                    }
+                });
+
+                const total = present + absent + excused;
+                const rate = total > 0 ? ((present / total) * 100).toFixed(1) : 0;
+
+                // Render
+                let html = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="color: var(--success);">✅</div>
+                            <span class="stat-value" style="color: var(--success);">${present}</span>
+                            <span class="stat-label">មករៀន</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="color: var(--danger);">❌</div>
+                            <span class="stat-value" style="color: var(--danger);">${absent}</span>
+                            <span class="stat-label">គ្មានច្បាប់</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="color: var(--warning);">⚠️</div>
+                            <span class="stat-value" style="color: var(--warning);">${excused}</span>
+                            <span class="stat-label">សុំច្បាប់</span>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="color: var(--info);">📊</div>
+                            <span class="stat-value" style="color: var(--info);">${rate}%</span>
+                            <span class="stat-label">អត្រាវត្តមាន</span>
+                        </div>
+                    </div>
+
+                    <div class="attendance-grid">
+                `;
+
+                attendanceList.forEach(item => {
+                    html += `
+                        <div class="attendance-item ${item.statusClass}">
+                            <span class="attendance-date">
+                                <i class="fas fa-calendar-day"></i> ${item.date}
+                            </span>
+                            <span class="attendance-status ${item.statusClass}">
+                                ${item.status}
+                            </span>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+
+                content.innerHTML = html;
+                document.getElementById('attendanceSection').dataset.loaded = 'true';
+
+            } catch (error) {
+                console.error('Error loading attendance:', error);
+                content.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>មានបញ្ហាក្នុងការផ្ទុកទិន្នន័យ</p></div>';
+            }
+        }
+
+        // ==================== LOAD SCHEDULE ====================
+        async function loadScheduleData() {
+            const content = document.getElementById('scheduleContent');
+
+            content.innerHTML = '<div class="loading"><div class="spinner"></div><p class="loading-text">កំពុងផ្ទុក...</p></div>';
+
+            try {
+                const data = await fetchSheetData('ClassTimes');
+
+                if (data.length < 2) {
+                    content.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>មិនមានទិន្នន័យកាលវិភាគ</p></div>';
+                    return;
+                }
+
+                const studentClass = AppState.studentData[3];
+                const classRow = data.find(row => row[0] === studentClass);
+
+                if (!classRow) {
+                    content.innerHTML = '<div class="empty-state"><i class="fas fa-chalkboard"></i><p>រកមិនឃើញកាលវិភាគសម្រាប់ថ្នាក់នេះ</p></div>';
+                    return;
+                }
+
+                const days = ['ច', 'អ', 'ព', 'ព្រ', 'ស', 'ស'];
+                const daysFull = ['ចន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'];
+                const times = [
+                    { label: '7-8', session: 'morning' },
+                    { label: '8-9', session: 'morning' },
+                    { label: '9-10', session: 'morning' },
+                    { label: '10-11', session: 'morning' },
+                    { label: '1-2', session: 'afternoon' },
+                    { label: '2-3', session: 'afternoon' },
+                    { label: '3-4', session: 'afternoon' },
+                    { label: '4-5', session: 'afternoon' }
+                ];
+
+                let html = `
+                    <div style="overflow-x: auto;">
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 60px;">ម៉ោង</th>
+                                    ${days.map((d, i) => `<th style="min-width: 80px;" title="${daysFull[i]}">${d}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                let currentSession = '';
+                times.forEach((time, timeIndex) => {
+                    // Add session header
+                    if (time.session !== currentSession) {
+                        currentSession = time.session;
+                        const sessionLabel = time.session === 'morning' ? 'ពេលព្រឹក' : 'ពេលល្ងាច';
+                        html += `<tr><td colspan="7" class="session-header">${sessionLabel}</td></tr>`;
+                    }
+
+                    html += `<tr><td class="time-col">${time.label}</td>`;
+
+                    days.forEach((day, dayIndex) => {
+                        const colIndex = 1 + (dayIndex * 8) + timeIndex;
+                        const subject = classRow[colIndex] || '';
+
+                        if (subject.trim()) {
+                            html += `<td class="subject-cell">${subject}</td>`;
+                        } else {
+                            html += `<td class="empty-cell">-</td>`;
+                        }
+                    });
+
+                    html += '</tr>';
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                content.innerHTML = html;
+                document.getElementById('scheduleSection').dataset.loaded = 'true';
+
+            } catch (error) {
+                console.error('Error loading schedule:', error);
+                content.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>មានបញ្ហាក្នុងការផ្ទុកទិន្នន័យ</p></div>';
+            }
+        }
+
+        // ==================== AUTO-LOGIN ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedId = localStorage.getItem('savedStudentId');
+            const savedName = localStorage.getItem('savedStudentName');
+
+            if (savedId && savedName) {
+                document.getElementById('studentId').value = savedId;
+                document.getElementById('studentName').value = savedName;
+                document.getElementById('rememberMe').checked = true;
+            }
+        });
+
+        // ==================== PWA INSTALL ====================
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('💾 PWA install available');
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('✅ Service Worker registered'))
+                .catch(err => console.log('❌ Service Worker failed:', err));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,3469 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>អនុវិទ្យាល័យសាមគ្គី</title>
+    <!-- 🎯 បន្ថែម Favicon ត្រង់នេះ -->
+    <link rel="icon" type="image/svg+xml"
+        href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
+    <link rel="apple-touch-icon"
+        href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&family=Moul&family=Siemreap&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="សាលាសាមគ្គី">
+    <meta name="theme-color" content="#2C6E49">
+    <style>
+        :root {
+            --primary-green: #2C6E49;
+            --secondary-green: #4C956C;
+            --accent-yellow: #FEC868;
+            --primary-blue: #1a56db;
+            --secondary-blue: #0e9f6e;
+            --light-bg: #f9fafb;
+            --dark-text: #1f2d3d;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --present-color: #28a745;
+            --absent-color: #dc3545;
+            --header-height: 70px;
+            --bottom-nav-height: 70px;
+            --slideshow-height: 300px;
+            --rank-gold: #FFD700;
+            --rank-silver: #C0C0C0;
+            --rank-bronze: #CD7F32;
+            --rank-normal: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Battambang', sans-serif;
+            background-color: #f3f4f6;
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header-bar {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            height: var(--header-height);
+        }
+
+        .navbar-brand {
+            color: var(--accent-yellow);
+            font-family: 'Moul', sans-serif;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .nav-link {
+            color: white !important;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 8px 15px;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: var(--accent-yellow) !important;
+        }
+
+        .nav-link.active {
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 15px;
+            right: 15px;
+            height: 3px;
+            background-color: var(--accent-yellow);
+            border-radius: 3px;
+        }
+
+        /* Notification Icon Styles */
+        .notification-icon-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .notification-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .notification-icon:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border: 2px solid var(--primary-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Notification Dropdown */
+        .notification-dropdown {
+            position: absolute;
+            top: 75px;
+            right: 20px;
+            width: 380px;
+            max-height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 2000;
+            animation: slideDown 0.3s ease;
+        }
+
+        .notification-dropdown.show {
+            display: flex;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-header {
+            padding: 15px 20px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .notification-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .notification-list {
+            overflow-y: auto;
+            max-height: 400px;
+            padding: 10px;
+        }
+
+        .notification-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .notification-list::-webkit-scrollbar-thumb {
+            background: var(--primary-green);
+            border-radius: 10px;
+        }
+
+        .notification-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .notification-item:hover {
+            background-color: #f0f7ff;
+            transform: translateX(5px);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--dark-text);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-title i {
+            color: var(--primary-green);
+        }
+
+        .notification-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .notification-date {
+            font-size: 0.8rem;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notification-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        .notification-empty i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        /* Notification Detail Modal */
+        .notification-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .notification-modal.show {
+            display: flex;
+        }
+
+        .notification-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .notification-modal-header {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .notification-modal-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .notification-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--dark-text);
+        }
+
+        .notification-modal-close:hover {
+            background: white;
+            transform: rotate(90deg);
+        }
+
+        .notification-modal-body {
+            padding: 30px;
+        }
+
+        .notification-modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 15px;
+            font-family: 'Moul', sans-serif;
+        }
+
+        .notification-modal-date {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-modal-description {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--dark-text);
+            white-space: pre-wrap;
+        }
+
+        .slideshow-container {
+            max-width: 100%;
+            margin: var(--header-height) auto 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: var(--shadow);
+        }
+
+        .slides {
+            position: relative;
+            height: var(--slideshow-height);
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide.active {
+            display: block;
+            animation: reverse 1s ease-in-out;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 1rem;
+            backdrop-filter: blur(3px);
+        }
+
+        .navigation-manual {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .manual-btn {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .manual-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(1.2);
+        }
+
+        .manual-btn.active {
+            background: var(--accent-yellow);
+            border-color: white;
+            transform: scale(1.3);
+        }
+
+        #content {
+            margin-top: 70px;
+            margin-bottom: calc(var(--bottom-nav-height) + 20px);
+            min-height: calc(100vh - var(--header-height) - var(--bottom-nav-height) - var(--slideshow-height));
+            padding: 20px;
+        }
+
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            height: var(--bottom-nav-height);
+        }
+
+        .bottom-nav-item {
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin: 5px;
+        }
+
+        .bottom-nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .bottom-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        .bottom-nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .loading-spinner i {
+            color: var(--primary-green);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        h2,
+        h4 {
+            font-family: 'Moul', sans-serif;
+            font-weight: 400;
+            color: var(--primary-green);
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        .home-intro {
+            font-size: 1rem;
+            text-align: center;
+            margin: 20px auto 30px;
+            color: #555;
+            max-width: 900px;
+            line-height: 1.8;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .subject-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .subject-icon {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+        }
+
+        .subject-title {
+            font-size: 1.1rem;
+            color: var(--dark-text);
+            margin: 0;
+        }
+
+        .enrollment-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            border-collapse: collapse;
+            animation: fadeIn 1s ease-in;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .enrollment-table th,
+        .enrollment-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            color: var(--dark-text);
+        }
+
+        .enrollment-table th {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .enrollment-table tr:hover {
+            background-color: #f1f1f1;
+            transition: background-color 0.3s ease;
+        }
+
+        .chart-container {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            position: relative;
+            height: 400px;
+            animation: fadeIn 1s ease-in;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .welcome-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section h1 {
+            color: var(--primary-green);
+            margin-bottom: 15px;
+            font-family: 'Moul', sans-serif;
+        }
+
+        .welcome-section p {
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .track-filters {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Battambang', sans-serif;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .track-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .student-list-container {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .list-header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 500;
+        }
+
+        .student-items {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .student-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .student-item:hover {
+            background-color: #f0f7ff;
+        }
+
+        .student-id {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .student-name {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .student-class {
+            font-size: 0.9rem;
+            color: var(--secondary-blue);
+        }
+
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2.2rem;
+            color: var(--dark-text);
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: var(--primary-blue);
+        }
+
+        .month-selector {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .month-selector label {
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+
+        .month-selector select {
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Battambang', sans-serif;
+        }
+
+        .month-selector select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .student-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .student-info h3 {
+            margin-bottom: 12px;
+            color: var(--primary-blue);
+        }
+
+        .student-info p {
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f0f7ff;
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .aggregate-info {
+            padding: 15px;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .aggregate-info p {
+            margin: 8px 0;
+        }
+
+        .rank {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .rank-1 {
+            background-color: var(--rank-gold);
+            color: #fff;
+        }
+
+        .rank-2 {
+            background-color: var(--rank-silver);
+            color: #fff;
+        }
+
+        .rank-3 {
+            background-color: var(--rank-bronze);
+            color: #fff;
+        }
+
+        .rank-other {
+            background-color: var(--rank-normal);
+            color: #fff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 120px;
+            font-family: 'Battambang', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1648b7;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-blue);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0c7c56;
+            transform: translateY(-2px);
+        }
+
+        .attendance-section {
+            margin-top: 20px;
+            padding: 1px;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .attendance-section h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .attendance-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .attendance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .attendance-date {
+            font-weight: 500;
+        }
+
+        .attendance-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .attendance-present {
+            background-color: var(--present-color);
+            color: white;
+        }
+
+        .attendance-absent {
+            background-color: var(--absent-color);
+            color: white;
+        }
+
+        .attendance-excused {
+            background-color: #ffa500;
+            color: white;
+        }
+
+        .error-message {
+            color: var(--absent-color);
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f8d7da;
+            margin: 10px 0;
+        }
+
+        .navbar-toggler {
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            padding: 8px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        .navbar-toggler i {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --slideshow-height: 200px;
+            }
+
+            .notification-dropdown {
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+
+            .notification-modal-content {
+                width: 95%;
+            }
+
+            .notification-modal-header {
+                height: 180px;
+            }
+
+            .notification-modal-body {
+                padding: 20px;
+            }
+
+            .notification-modal-title {
+                font-size: 1.4rem;
+            }
+
+            .slides {
+                height: var(--slideshow-height);
+            }
+
+            .caption {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+
+            .navbar-brand img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .bottom-nav-item {
+                font-size: 0.75rem;
+                padding: 6px;
+            }
+
+            .bottom-nav-item i {
+                font-size: 1.3rem;
+            }
+
+            #content {
+                padding: 15px;
+            }
+
+            .subjects-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .subject-card {
+                padding: 15px;
+            }
+
+            .subject-icon {
+                font-size: 2rem;
+            }
+
+            .subject-title {
+                font-size: 1rem;
+            }
+
+            .enrollment-table {
+                font-size: 0.9rem;
+            }
+
+            .enrollment-table th,
+            .enrollment-table td {
+                padding: 8px;
+            }
+
+            .chart-container {
+                height: 300px;
+                padding: 15px;
+            }
+
+            .popup-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .track-content {
+                flex-direction: column;
+            }
+
+            .student-list-container {
+                min-width: 100%;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .attendance-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --slideshow-height: 180px;
+            }
+
+            .caption {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+            .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .bottom-nav-item {
+                font-size: 0.7rem;
+                padding: 5px;
+            }
+
+            .bottom-nav-item i {
+                font-size: 1.2rem;
+                margin-bottom: 2px;
+            }
+
+            .manual-btn {
+                width: 10px;
+                height: 10px;
+            }
+
+            .subjects-grid {
+                gap: 10px;
+                padding: 10px;
+            }
+
+            h2,
+            h4 {
+                font-size: 1.3rem;
+                margin-top: 20px;
+            }
+
+            .home-intro {
+                font-size: 0.95rem;
+                padding: 0 10px;
+            }
+
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                min-width: 100%;
+            }
+
+            .month-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .month-selector select {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+            .attendance-item {
+                padding: 8px;
+            }
+
+            .navbar-collapse {
+                margin-top: 17px;
+                background-color: var(--primary-green);
+            }
+
+            .notification-icon {
+                font-size: 1.3rem;
+            }
+
+            .notification-badge {
+                width: 18px;
+                height: 18px;
+                font-size: 0.65rem;
+            }
+        }
+
+        /* 🎨 Simple Clean Button */
+        .track-btn-simple {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            margin-top: 20px;
+            background: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(44, 110, 73, 0.3);
+            font-family: 'Battambang', sans-serif;
+        }
+
+        .track-btn-simple:hover {
+            background: var(--secondary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 110, 73, 0.4);
+        }
+
+        .track-btn-simple:active {
+            transform: translateY(0);
+        }
+
+        .track-btn-simple i {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 480px) {
+            .track-btn-simple {
+                width: 100%;
+                justify-content: center;
+                max-width: 250px;
+            }
+        }
+
+        /* 📅 Khmer Calendar Styles - Responsive & Clean */
+        .calendar-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .calendar-nav button {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Battambang', sans-serif;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .calendar-nav button:hover {
+            background: var(--secondary-green);
+            transform: scale(1.05);
+        }
+
+        .calendar-title {
+            font-size: 1.3rem;
+            color: var(--primary-green);
+            font-weight: 600;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        #todayBtn {
+            /* background: var(--primary-blue) !important;
+            padding: 8px 16px;
+            font-size: 0.9rem; */
+            background: var(--primary-green) !important;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Battambang', sans-serif;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 15px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            padding: 10px 5px;
+            background: var(--primary-green);
+            color: white;
+            font-weight: 600;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .calendar-day-header.sunday {
+            background: #d32f2f;
+        }
+
+        .calendar-day {
+            min-height: 70px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+            background: #f5f5f5;
+        }
+
+        .calendar-day.holiday {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 2px solid #d32f2f;
+        }
+
+        .calendar-day.event {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid #ff9800;
+        }
+
+        .day-number {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .day-events {
+            font-size: 0.7rem;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .event-badge {
+            display: block;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin: 2px 0;
+            font-size: 0.65rem;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .event-badge.holiday {
+            background: #f44336;
+            color: white;
+        }
+
+        .event-badge.event {
+            background: #ff9800;
+            color: white;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            padding: 15px;
+            background: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .legend-color.today {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .legend-color.holiday {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 2px solid #d32f2f;
+        }
+
+        .legend-color.event {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid #ff9800;
+        }
+
+        /* 📋 Events List Section */
+        .calendar-events-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .calendar-events-section h3 {
+            color: var(--primary-green);
+            font-family: 'Moul', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-green);
+            padding-bottom: 10px;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .event-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .event-list-item:hover {
+            background: var(--light-bg);
+            transform: translateX(5px);
+        }
+
+        .event-list-item.holiday {
+            background: linear-gradient(to right, #ffebee, white);
+            border-left-color: #d32f2f;
+        }
+
+        .event-list-item.event {
+            background: linear-gradient(to right, #fff3e0, white);
+            border-left-color: #ff9800;
+        }
+
+        .event-date-box {
+            min-width: 70px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-date-day {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            line-height: 1;
+        }
+
+        .event-date-month {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .event-date-box.holiday .event-date-day {
+            color: #d32f2f;
+        }
+
+        .event-date-box.event .event-date-day {
+            color: #ff9800;
+        }
+
+        .event-info {
+            flex: 1;
+        }
+
+        .event-info-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 5px;
+        }
+
+        .event-info-desc {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .event-type-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .event-type-badge.holiday {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .event-type-badge.event {
+            background: #ff9800;
+            color: white;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .no-events i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        /* 📝 Copyright Footer */
+        .calendar-footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            background: var(--light-bg);
+            border-radius: 12px;
+            border-top: 3px solid var(--primary-green);
+        }
+
+        .calendar-footer p {
+            margin: 0;
+            color: var(--primary-green);
+            font-size: 0.95rem;
+        }
+
+        .calendar-footer strong {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        /* 📱 Mobile Responsive for Events List */
+        @media (max-width: 768px) {
+            .calendar-events-section {
+                padding: 15px;
+            }
+
+            .calendar-events-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .event-list-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .event-date-box {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .event-date-day {
+                font-size: 1.5rem;
+            }
+
+            .event-info-title {
+                font-size: 1rem;
+            }
+
+            .event-info-desc {
+                font-size: 0.9rem;
+            }
+
+            .calendar-footer {
+                padding: 15px;
+            }
+
+            .calendar-footer p {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Event Detail Modal */
+        .event-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+
+        .event-modal.show {
+            display: flex;
+        }
+
+        .event-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .event-modal-close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        .event-modal-close:hover {
+            color: var(--primary-green);
+        }
+
+        .event-modal-title {
+            font-size: 1.4rem;
+            color: var(--primary-green);
+            margin-bottom: 12px;
+            font-family: 'Moul', sans-serif;
+            clear: both;
+            padding-top: 5px;
+        }
+
+        .event-modal-date {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .event-modal-description {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--dark-text);
+        }
+
+        /* 📱 Mobile Responsive */
+        @media (max-width: 768px) {
+            .calendar-container {
+                padding: 15px;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .calendar-nav {
+                justify-content: center;
+                order: 2;
+                margin-top: 10px;
+            }
+
+            .calendar-title {
+                font-size: 1.2rem;
+                order: 1;
+                text-align: center;
+            }
+
+            #todayBtn {
+                order: 3;
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            .calendar-day {
+                min-height: 60px;
+                padding: 4px;
+            }
+
+            .day-number {
+                font-size: 1rem;
+            }
+
+            .calendar-day-header {
+                font-size: 0.75rem;
+                padding: 8px 2px;
+            }
+
+            .event-badge {
+                font-size: 0.6rem;
+                padding: 1px 2px;
+            }
+
+            .calendar-legend {
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .legend-item {
+                font-size: 0.8rem;
+            }
+
+            .event-modal-content {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .event-modal-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calendar-container {
+                padding: 10px;
+            }
+
+            .calendar-day {
+                min-height: 50px;
+                padding: 3px;
+            }
+
+            .day-number {
+                font-size: 0.9rem;
+            }
+
+            .calendar-day-header {
+                font-size: 0.7rem;
+                padding: 6px 1px;
+            }
+
+            .calendar-grid {
+                gap: 4px;
+            }
+
+            .event-badge {
+                font-size: 0.55rem;
+            }
+
+            .calendar-nav button {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .calendar-title {
+                font-size: 1.1rem;
+            }
+
+        }
+
+        /* 🎨 លាក់ Slideshow */
+        .slideshow-container.hidden {
+            display: none;
+        }
+
+        /* 📝 Global Copyright Footer */
+        .global-copyright {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            background: var(--light-bg);
+            border-radius: 12px;
+            border-top: 3px solid var(--primary-green);
+        }
+
+        .global-copyright p {
+            margin: 0;
+            color: var(--primary-green);
+            font-size: 0.95rem;
+        }
+
+        .global-copyright strong {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .global-copyright .copyright-icon {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .global-copyright {
+                padding: 15px;
+            }
+
+            .global-copyright p {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Slideshow -->
+    <section class="slideshow-container">
+        <div class="slides">
+            <div class="slide active">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgSg4bHkn8gu8Kyoc8cpuyvRla0XqXMoA5Po2wrclZKYFCHg4CFvVNInUloOBat77_QwfwyjDh1TEeIOwjaRJZtcEyAVyuqLt8xzXi1Djn1k5Vn5r2w8f37rAggcXLEewZwKAabpcrAISbGY7DRouoLBq3RMVqnLs2J3qEmDI1WZe5dfG5e0NA38Qp5Wyo/s1280/photo_18_2024-06-05_13-08-57.jpg"
+                    alt="School Campus">
+                <!-- <div class="caption">ទិដ្ឋភាពសាលា</div> -->
+            </div>
+            <div class="slide">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVsJmsF3yiMA1OkckpaXxhGps5I_jL6ieEjaZtYGBeqWfiUT3PkAWPvCvHvQCIdT2P-G-EIShnvfo-za5gF9jdh-QTT9Gc0LUF0MdePGiAhrdP2HBdCqvAzoQfNUlhm1y7bKs1H7mle0kG-Lz4NpPaq9Ko5BwIk0_0_EmP1EkVLyqqUzuGDh4Hf1CCtoc/s1280/photo_15_2024-06-05_13-08-57.jpg"
+                    alt="Student Activities">
+                <!-- <div class="caption">សកម្មភាពសិស្ស</div> -->
+            </div>
+            <div class="slide">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEheOXtQKW_9_1yAqMCkVAE18MV6wTMnrv1VEnidpyztE2ch-iqAj76uP4uE28H9HrkBm4NJNX3RSUqCGsOBhAi-iqcMVfbnwJdDmvNsDBEPUQ303_eOR_9DF1iL1ij6tN7q8_Ey62D1Jh51WualOonta33RN7TiBOm52a7CX8AJ97P0TiSfBeswCz9cdLY/s1280/photo_19_2024-06-05_13-08-57.jpg"
+                    alt="School Events">
+                <!-- <div class="caption"> ព្រឹត្តិការណ៍សាលា</div> -->
+            </div>
+            <div class="slide">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEipDmBe-pbPyZYQwcwtBAHXRwDl5OZPuj-GF2s53IHrJonk-g83mMCgRWtWep5RjetHAKtqp5l0Wj1UrUULbDeIknNZJ4J3WjyEuv8-U4qEFEnI12msNm3jT0yhsgr5C0fzsZMoR39oMuQCXIWerRt5vMswAuKBDLoDp_11wVlNOANtjZOsjEgWCVWnkS4/s1280/photo_23_2024-06-05_13-08-57.jpg"
+                    alt="School Events">
+                <!-- <div class="caption"> ព្រឹត្តិការណ៍សាលា</div> -->
+            </div>
+            <div class="slide">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgbnC-7OnvkXr9OspI-XWHIUeXiuFEqccB5kaiL3ngNcv0L4IaAT1JiJx-IzysoU6JKe_aCLE9JdvPeslTaGgUgoxsB5hgkizdkrhggPtvnWQP6Cj7MeU8mGzqQklml_pmFSDLlgJRl69KWwhw6TIQ6UcunI-0uSIPWdT-GWkhy8HLni5ywxEm9YeRBRZA"
+                    alt="School Events">
+                <!-- <div class="caption"> គណៈកម្មការប្រឡងឌីប្លូមឆ្នាំ២០២៥</div> -->
+            </div>
+
+            <div class="slide">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhm8RPzmGIq9SzXs5x4pLH0wDXjuKGSQB2xpI_IosoFHCpzbQjIyeIEtGiCfwGb-SAtQJtClAQviP88HzuBp9o5H8BuiFIY-JwKWnI4p9bDLZb9fPl5NbHo8iXNffKhi0tsrg2stlEqteNb3RoavcUnvdiBigYgc1DQHda1R6WaGLppIrOsZVPgeOax_8k"
+                    alt="School Events">
+                <div class="caption"> សម្ពោធអគារកុំព្យូទ័រឆ្នាំ២០២៥</div>
+            </div>
+            <div class="slide">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEi15bdASNPg5HzT5msh0td4_dZCOz-g3eFdWOw3IEx4FYyVQogIMMWGQFSRJmnZGq8aurxmxcw9QdAK7pYIFSZfI4Sb0aEE9Sk5Kwyfkgbt0fh0PbI2abWNI9AoVwh_LvCsV-vqdN8y3zZeJzqwoqyhTBnW_7VmKl4kUWcC1JIkaUMANPb9H4OV69BTBXo"
+                    alt="School Events">
+                <div class="caption"> សិស្សក្លឹបICT ឆ្នាំសិក្សា២០២៤-២០២៥</div>
+            </div>
+            <div class="slide">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjR4ID3l0yVxiygml3GLLrLg_c1Un4VH73ci6za-voffdvQmFR5ebs9OqKHlW7KfN-1-BDseDZqZBAZpsaByntW1mBDnYlQjSRrWbbax95Nz5Ue6RCnBHb6KpdR_XJ-QodM0_JQUB_fkmyoR2vZek_QyK8PPjTVIhPsTgKX3_6dtEjyfhB3QDbCsZaqQss"
+                    alt="School Events">
+                <div class="caption"> សិស្សបោះបង់ការសិក្សារៀនកុំព្យូទ័រឆ្នាំ២០២៥</div>
+            </div>
+
+        </div>
+        <div class="navigation-manual">
+            <span class="manual-btn active" data-slide="0"></span>
+            <span class="manual-btn" data-slide="1"></span>
+            <span class="manual-btn" data-slide="2"></span>
+            <span class="manual-btn" data-slide="3"></span>
+            <span class="manual-btn" data-slide="4"></span>
+            <span class="manual-btn" data-slide="5"></span>
+            <span class="manual-btn" data-slide="6"></span>
+            <span class="manual-btn" data-slide="7"></span>
+        </div>
+    </section>
+
+    <!-- Header Navigation -->
+    <nav class="header-bar navbar navbar-expand-md">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Emblem_of_the_Ministry_of_Education%2C_Youth_and_Sport_%28Cambodia%29.svg"
+                    alt="Logo">
+                អនុវិទ្យាល័យសាមគ្គី
+            </a>
+            <div class="d-flex align-items-center">
+                <!-- Notification Icon -->
+                <div class="notification-icon-wrapper" id="notificationIconWrapper">
+                    <i class="fas fa-bell notification-icon"></i>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#" data-section="home">ទំព័រដើម</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="calendar">ប្រតិទិន</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="track-child">ពិន្ទុសិស្ស</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-section="profile">អំពីយើង</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notification Dropdown -->
+    <div class="notification-dropdown" id="notificationDropdown">
+        <div class="notification-header">
+            <h3><i class="fas fa-bell"></i> ការជូនដំណឹង</h3>
+            <span id="notificationCount">0</span>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>មិនមានការជូនដំណឹងថ្មី</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Detail Modal -->
+    <div class="notification-modal" id="notificationModal">
+        <div class="notification-modal-content">
+            <div class="notification-modal-header">
+                <img src="" alt="Cover Image" class="notification-modal-cover" id="modalCoverImg">
+                <button class="notification-modal-close" id="modalCloseBtn">×</button>
+            </div>
+            <div class="notification-modal-body">
+                <h2 class="notification-modal-title" id="modalTitle"></h2>
+                <div class="notification-modal-date" id="modalDate">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span></span>
+                </div>
+                <div class="notification-modal-description" id="modalDescription"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div id="content" class="container"></div>
+
+
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-menu">
+        <div class="bottom-nav-item active" data-section="home">
+            <i class="fas fa-home"></i>
+            <div>ទំព័រដើម</div>
+        </div>
+        <div class="bottom-nav-item" data-section="calendar">
+            <i class="fas fa-calendar-alt"></i>
+            <div>ប្រតិទិន</div>
+        </div>
+        <div class="bottom-nav-item" data-section="track-child">
+            <i class="fas fa-user-graduate"></i>
+            <div>ពិន្ទុសិស្ស</div>
+        </div>
+        <div class="bottom-nav-item" data-section="profile">
+            <i class="fas fa-user"></i>
+            <div>អំពីយើង</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const SPREADSHEET_ID = '1FOxoZrYjGoqqxww9hqK1jVU298-gujpMJ7T7kz_h1F0';
+
+        const AppState = {
+            currentSection: 'home',
+            chartInstance: null,
+            currentSlide: 0,
+            isLoading: false,
+            sheetNames: [],
+            currentSheetData: null,
+            currentStudentId: null,
+            currentStudentClass: null,
+            currentMonth: null,
+            notifications: []
+        };
+
+        // Notification Controller
+        class NotificationController {
+            constructor() {
+                this.iconWrapper = document.getElementById('notificationIconWrapper');
+                this.dropdown = document.getElementById('notificationDropdown');
+                this.badge = document.getElementById('notificationBadge');
+                this.list = document.getElementById('notificationList');
+                this.count = document.getElementById('notificationCount');
+                this.modal = document.getElementById('notificationModal');
+                this.isDropdownOpen = false;
+            }
+
+            async init() {
+                await this.loadNotifications();
+                this.setupEventListeners();
+            }
+
+            async loadNotifications() {
+                try {
+                    const data = await fetchSheetData('Notifications');
+                    if (data.length > 1) {
+                        AppState.notifications = data.slice(1).map(row => ({
+                            id: row[0],
+                            coverImg: row[1] || 'https://via.placeholder.com/700x250/2C6E49/FFFFFF?text=Notification',
+                            title: row[2] || 'គ្មានចំណងជើង',
+                            description: row[3] || 'គ្មានព័ត៌មានលម្អិត',
+                            date: row[4] || 'គ្មានកាលបរិច្ឆេទ'
+                        }));
+                        this.updateBadge();
+                        this.renderNotifications();
+                    }
+                } catch (error) {
+                    console.error('Error loading notifications:', error);
+                }
+            }
+
+            updateBadge() {
+                const count = AppState.notifications.length;
+                if (count > 0) {
+                    this.badge.textContent = count > 99 ? '99+' : count;
+                    this.badge.style.display = 'flex';
+                } else {
+                    this.badge.style.display = 'none';
+                }
+            }
+
+            renderNotifications() {
+                if (AppState.notifications.length === 0) {
+                    this.list.innerHTML = `
+                        <div class="notification-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>មិនមានការជូនដំណឹងថ្មី</p>
+                        </div>
+                    `;
+                    this.count.textContent = '0';
+                    return;
+                }
+
+                this.count.textContent = AppState.notifications.length;
+                this.list.innerHTML = AppState.notifications.map(notif => `
+                    <div class="notification-item" data-id="${notif.id}">
+                        <div class="notification-title">
+                            <i class="fas fa-info-circle"></i>
+                            ${notif.title}
+                        </div>
+                        <div class="notification-description">${notif.description}</div>
+                        <div class="notification-date">
+                            <i class="fas fa-clock"></i>
+                            ${notif.date}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            setupEventListeners() {
+                this.iconWrapper.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleDropdown();
+                });
+
+                this.list.addEventListener('click', (e) => {
+                    const item = e.target.closest('.notification-item');
+                    if (item) {
+                        const id = item.dataset.id;
+                        const notification = AppState.notifications.find(n => n.id === id);
+                        if (notification) {
+                            this.showNotificationDetail(notification);
+                            this.closeDropdown();
+                        }
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!this.dropdown.contains(e.target) && !this.iconWrapper.contains(e.target)) {
+                        this.closeDropdown();
+                    }
+                });
+
+                const modalCloseBtn = document.getElementById('modalCloseBtn');
+                modalCloseBtn.addEventListener('click', () => this.closeModal());
+
+                this.modal.addEventListener('click', (e) => {
+                    if (e.target === this.modal) {
+                        this.closeModal();
+                    }
+                });
+            }
+
+            toggleDropdown() {
+                if (this.isDropdownOpen) {
+                    this.closeDropdown();
+                } else {
+                    this.openDropdown();
+                }
+            }
+
+            openDropdown() {
+                this.dropdown.classList.add('show');
+                this.isDropdownOpen = true;
+            }
+
+            closeDropdown() {
+                this.dropdown.classList.remove('show');
+                this.isDropdownOpen = false;
+            }
+
+            showNotificationDetail(notification) {
+                const modalCoverImg = document.getElementById('modalCoverImg');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalDate = document.getElementById('modalDate');
+                const modalDescription = document.getElementById('modalDescription');
+
+                modalCoverImg.src = notification.coverImg;
+                modalTitle.textContent = notification.title;
+                modalDate.querySelector('span').textContent = notification.date;
+                modalDescription.textContent = notification.description;
+
+                this.modal.classList.add('show');
+            }
+
+            closeModal() {
+                this.modal.classList.remove('show');
+            }
+        }
+
+        class SlideshowController {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.buttons = document.querySelectorAll('.manual-btn');
+                this.currentIndex = 0;
+                this.autoPlayInterval = null;
+                this.isPaused = false;
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.startAutoPlay();
+            }
+
+            setupEventListeners() {
+                this.buttons.forEach((btn, index) => {
+                    btn.addEventListener('click', () => {
+                        this.goToSlide(index);
+                        this.resetAutoPlay();
+                    });
+                });
+
+                const container = document.querySelector('.slideshow-container');
+                container.addEventListener('mouseenter', () => this.pause());
+                container.addEventListener('mouseleave', () => this.resume());
+
+                let touchStartX = 0;
+                container.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    this.pause();
+                });
+
+                container.addEventListener('touchend', (e) => {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const diff = touchStartX - touchEndX;
+
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) this.next();
+                        else this.prev();
+                    }
+                    this.resume();
+                });
+            }
+
+            goToSlide(index) {
+                this.slides[this.currentIndex].classList.remove('active');
+                this.buttons[this.currentIndex].classList.remove('active');
+
+                this.currentIndex = index;
+
+                this.slides[this.currentIndex].classList.add('active');
+                this.buttons[this.currentIndex].classList.add('active');
+            }
+
+            next() {
+                const nextIndex = (this.currentIndex + 1) % this.slides.length;
+                this.goToSlide(nextIndex);
+            }
+
+            prev() {
+                const prevIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+                this.goToSlide(prevIndex);
+            }
+
+            startAutoPlay() {
+                this.autoPlayInterval = setInterval(() => {
+                    if (!this.isPaused) {
+                        this.next();
+                    }
+                }, 4000);
+            }
+
+            resetAutoPlay() {
+                clearInterval(this.autoPlayInterval);
+                this.startAutoPlay();
+            }
+
+            pause() {
+                this.isPaused = true;
+            }
+
+            resume() {
+                this.isPaused = false;
+            }
+
+            destroy() {
+                clearInterval(this.autoPlayInterval);
+            }
+        }
+
+        class NavigationController {
+            constructor() {
+                this.navLinks = document.querySelectorAll('.nav-link');
+                this.bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+                this.contentContainer = document.getElementById('content');
+                this.navbarCollapse = document.getElementById('navbarNav');
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadContent('home');
+                this.toggleSlideshow('home');
+            }
+
+            setupEventListeners() {
+                this.navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = link.getAttribute('data-section');
+                        this.navigateTo(section);
+                    });
+                });
+
+                this.bottomNavItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const section = item.getAttribute('data-section');
+                        this.navigateTo(section);
+                    });
+                });
+            }
+
+            navigateTo(section) {
+                if (AppState.isLoading) return;
+
+                // ✅ ប្រសិនជា track-child redirect ទៅ tracking.html
+                if (section === 'track-child') {
+                    window.location.href = 'tracking.html';
+                    return;
+                }
+
+                this.setActiveSection(section);
+                this.loadContent(section);
+                this.toggleSlideshow(section);
+                this.closeNavbar();
+                this.scrollToContent();
+            }
+
+            setActiveSection(section) {
+                this.navLinks.forEach(link => link.classList.remove('active'));
+                this.bottomNavItems.forEach(item => item.classList.remove('active'));
+
+                const activeNavLink = document.querySelector(`.nav-link[data-section="${section}"]`);
+                const activeBottomItem = document.querySelector(`.bottom-nav-item[data-section="${section}"]`);
+
+                if (activeNavLink) activeNavLink.classList.add('active');
+                if (activeBottomItem) activeBottomItem.classList.add('active');
+
+                AppState.currentSection = section;
+            }
+
+            loadContent(section) {
+                AppState.isLoading = true;
+
+                this.contentContainer.innerHTML = `
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin fa-3x"></i>
+                <p>កំពុងផ្ទុក...</p>
+            </div>
+        `;
+
+                setTimeout(() => {
+                    this.renderContent(section);
+                    AppState.isLoading = false;
+                }, 300);
+            }
+
+            async renderContent(section) {
+                const content = this.getContentTemplate(section);
+                this.contentContainer.innerHTML = content;
+
+                if (section === 'home') {
+                    this.initializeHomeChart();
+                } else if (section === 'calendar') {
+                    await this.initializeCalendar();
+                }
+                // ✅ លុប track-child initialization ចេញ
+            }
+
+            getContentTemplate(section) {
+                const templates = {
+                    home: `
+                <h2>សូមស្វាគមន៍</h2>
+                <p class="home-intro">  សាលាអនុវិទ្យាល័យសាមគ្គី មានទីតាំងស្ថិតនៅតាមបណ្ដោយផ្លូវជាតិលេខ៥៧.៧ ភូមិចំការចេក ឃុំស៊ុង ស្រុកសំឡូត ខេត្តបាត់ដំបង  ស្ថិតនៅចម្ងាយប្រមាណ១៦គីឡូម៉ែត្រពីការិយាល័យអប់រំ យុវជន និងកីឡានៃរដ្ឋបាលស្រុកសំឡូត លេខកូដសាលា 02110503702។
+                            គ្រូបង្រៀនសរុបចំនួន១៥នាក់ ក្នុងនោះស្រី៦នាក់។ មានអគារសិក្សា២ខ្នង បន្ទប់រៀនសរុប៩បន្ទប់
+                            ទីចាត់ការ១បន្ទប់ បណ្ណាល័យ១បន្ទប់ បន្ទប់សិក្សាកុំព្យូទ័រ១បន្ទប់ និងបន្ទប់ទឹក៤បន្ទប់។
+                </p>
+                
+                <h4><i class="fas fa-graduation-cap"></i> មុខវិជ្ជាសិក្សា</h4>
+                <div class="subjects-grid">
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-book"></i></div>
+                        <h3 class="subject-title">ភាសាខ្មែរ</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                        <h3 class="subject-title">គណិតវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                        <h3 class="subject-title">រូបវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-flask"></i></div>
+                        <h3 class="subject-title">គីមីវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-leaf"></i></div>
+                        <h3 class="subject-title">ជីវវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-globe"></i></div>
+                        <h3 class="subject-title">ផែនដីវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-history"></i></div>
+                        <h3 class="subject-title">ប្រវត្តិវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-landmark"></i></div>
+                        <h3 class="subject-title">ភូមិវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-balance-scale"></i></div>
+                        <h3 class="subject-title">សីលធម៌-ពលរដ្ឋវិជ្ជា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-language"></i></div>
+                        <h3 class="subject-title">ភាសាអង់គ្លេស</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-users"></i></div>
+                        <h3 class="subject-title">បំណិនជីវិត</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-dumbbell"></i></div>
+                        <h3 class="subject-title">អប់រំកាយ និងកីឡា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-stroopwafel"></i></div>
+                        <h3 class="subject-title">គេហវិទ្យា</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-laptop"></i></div>
+                        <h3 class="subject-title">កុំព្យូទ័រ (ICT)</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-volleyball-ball"></i></div>
+                        <h3 class="subject-title">បាល់ទះ</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-bowling-ball"></i></div>
+                        <h3 class="subject-title">ប៉េតង់</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-arrows-alt-h"></i></div>
+                        <h3 class="subject-title">លោតចម្ងាយ</h3>
+                    </div>
+                    <div class="subject-card">
+                        <div class="subject-icon"><i class="fas fa-book"></i></div>
+                        <h3 class="subject-title">បណ្ណាល័យ</h3>
+                    </div>
+                </div>
+
+                <h4><i class="fas fa-chart-line"></i> ស្ថិតិសិស្សតាមឆ្នាំសិក្សា</h4>
+                <table class="enrollment-table">
+                    <thead>
+                        <tr>
+                            <th>ឆ្នាំសិក្សា</th>
+                            <th>សរុប (នាក់)</th>
+                            <th>ស្រី (នាក់)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2020-2021</td>
+                            <td>357</td>
+                            <td>184</td>
+                        </tr>
+                        <tr>
+                            <td>2021-2022</td>
+                            <td>394</td>
+                            <td>213</td>
+                        </tr>
+                        <tr>
+                            <td>2022-2023</td>
+                            <td>381</td>
+                            <td>221</td>
+                        </tr>
+                        <tr>
+                            <td>2023-2024</td>
+                            <td>383</td>
+                            <td>222</td>
+                        </tr>
+                        <tr>
+                            <td>2024-2025</td>
+                            <td>390</td>
+                            <td>201</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4><i class="fas fa-chart-bar"></i> ក្រាបស្ថិតិសិស្ស</h4>
+                <div class="chart-container">
+                    <canvas id="homeStudentsChart"></canvas>
+                </div>
+                
+                
+            `,
+                    calendar: `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: var(--primary-green); font-family: 'Moul', sans-serif; margin-bottom: 5px;">
+                        <i class="fas fa-calendar-alt"></i> ប្រតិទិនអនុវិទ្យាល័យសាមគ្គី
+                    </h2>
+                    <p style="color: #666; font-size: 0.95rem;">កាលបរិច្ឆេទថ្ងៃឈប់សម្រាក និងព្រឹត្តិការណ៍សំខាន់ៗ</p>
+                </div>
+                
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <div class="calendar-nav">
+                            <button id="prevMonth"><i class="fas fa-chevron-left"></i> មុន</button>
+                            <h2 class="calendar-title" id="calendarTitle">កំពុងផ្ទុក...</h2>
+                            <button id="nextMonth">បន្ទាប់ <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <button id="todayBtn" style="background: var(--primary-blue);">
+                            <i class="fas fa-calendar-day"></i> ចូលទៅថ្ងៃនេះ
+                        </button>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <div class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                            <p>កំពុងផ្ទុកប្រតិទិន...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-color today"></div>
+                            <span>ថ្ងៃនេះ</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color holiday"></div>
+                            <span>ថ្ងៃឈប់សម្រាក</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color event"></div>
+                            <span>ព្រឹត្តិការណ៍ធម្មតា</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calendar-events-section" id="calendarEventsSection">
+                    <h3><i class="fas fa-list-ul"></i> ព្រឹត្តិការណ៍ខែនេះ</h3>
+                    <div class="events-list" id="eventsList">
+                        <div class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="event-modal" id="eventModal">
+                    <div class="event-modal-content">
+                        <span class="event-modal-close" id="eventModalClose">&times;</span>
+                        <h3 class="event-modal-title" id="eventModalTitle"></h3>
+                        <p class="event-modal-date" id="eventModalDate"></p>
+                        <p class="event-modal-description" id="eventModalDescription"></p>
+                    </div>
+                </div>
+            `,
+                    'track-child': `
+                <div class="welcome-section">
+                    <h1 style="font-size:1.5rem;">
+                        <i class="fas fa-chart-line"></i> តាមដានពិន្ទុ និងវត្តមានសិស្ស
+                    </h1>
+                    <p style="font-size: 1.05rem; line-height: 1.8; margin: 20px 0;">
+                        ចុចប៊ូតុងខាងក្រោមដើម្បីចូលទៅកាន់ប្រព័ន្ធតាមដានពិន្ទុ និងវត្តមានរបស់កូនអ្នក។ 
+                        អ្នកនឹងត្រូវចូលដោយប្រើអត្តលេខសិស្សជាលេខសម្ងាត់។
+                    </p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="tracking.html" class="track-btn-simple" style="text-decoration: none;">
+                            <i class="fas fa-child"></i>
+                            តាមដានកូនឥឡូវនេះ
+                        </a>
+                    </div>
+
+                    <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 12px; padding: 20px; margin: 30px 0;">
+                        <h3 style="color: #856404; margin: 0 0 15px 0; font-size: 1.1rem;">
+                            <i class="fas fa-info-circle"></i> របៀបប្រើប្រាស់
+                        </h3>
+                        <ol style="color: #856404; line-height: 2; margin: 0; padding-left: 20px;">
+                            <li><strong>ឈ្មោះអ្នកប្រើប្រាស់:</strong> samaki</li>
+                            <li><strong>លេខសម្ងាត់:</strong> អត្តលេខសិស្សរបស់កូនអ្នក (ឧទាហរណ៍: 001, 002, ...)</li>
+                            <li>ជ្រើសរើសខែដែលចង់មើលពិន្ទុ</li>
+                            <li>អាចមើលវត្តមាន និងកាលវិភាគសិក្សាបាន</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #e8f5e9; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                        <h3 style="color: #2e7d32; margin: 0 0 15px 0; font-size: 1.1rem;">
+                            <i class="fas fa-shield-alt"></i> សុវត្ថិភាព
+                        </h3>
+                        <p style="color: #2e7d32; margin: 0; line-height: 1.8;">
+                            មានតែឪពុកម្តាយដែលដឹងអត្តលេខសិស្សប៉ុណ្ណោះ
+                            ទើបអាចចូលមើលបាន។ ប្រព័ន្ធនឹងចងចាំការចូលរយៈពេល 90 ថ្ងៃ។
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="global-copyright">
+                    <p><strong>Developed & Designed by My Langdy</strong></p>
+                    <p class="copyright-icon">
+                        <i class="fas fa-code"></i> វេបសាយអនុវិទ្យាល័យសាមគ្គី © 2025
+                    </p>
+                </div>
+            `,
+                    profile: `
+                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: var(--shadow);">
+                    <h2><i class="fas fa-info-circle"></i> អំពីសាលា</h2>
+                    <div style="margin-top: 30px;">
+                        <h3 style="color: var(--primary-green); margin-bottom: 15px;">ប្រវត្តិសាលា</h3>
+                        <p style="line-height: 1.8; color: #555;">សាលាអនុវិទ្យាល័យសាមគ្គីត្រូវបានបង្កើតឡើងក្នុងឆ្នាំ២០០៤ ជាសាលារៀនដែលមានបេសកកម្មក្នុងការផ្តល់សេវាអប់រំសាធារណៈក្នុងសហគមន៍។</p>
+                        
+                        <h3 style="color: var(--primary-green); margin-top: 30px; margin-bottom: 15px;">ចក្ខុវិស័យ</h3>
+                        <p style="line-height: 1.8; color: #555;">ក្លាយជាស្ថាប័នផ្តល់សេវាអប់រំប្រកបដោយគុណភាពក្នុងការបណ្តុះបណ្តាលនិងអភិវឌ្ឍមូលធនមនុស្សឱ្យក្លាយជាពលរដ្ឋដែលមានចំណេះដឹង គុណធម៌ និងទំនួលខុសត្រូវ។</p>
+                        
+                        <h3 style="color: var(--primary-green); margin-top: 30px; margin-bottom: 15px;">ទំនាក់ទំនង</h3>
+                        <p style="margin: 10px 0;"><i class="fas fa-phone" style="color: var(--primary-green); margin-right: 10px;"></i> លោក កែវ ប៊ុនធឿន នាយក: 095 897 775</p>
+                        <p style="margin: 10px 0;"><i class="fas fa-phone" style="color: var(--primary-green); margin-right: 10px;"></i> លោក ទូច សុខខេង នាយករង: 088 444 6748</p>
+                        <p style="margin: 10px 0;"><i class="fas fa-envelope" style="color: var(--primary-green); margin-right: 10px;"></i> វេបសាយ: www.samakischool.site</p>
+                        <p style="margin: 10px 0;"><i class="fas fa-map-marker-alt" style="color: var(--primary-green); margin-right: 10px;"></i> អាសយដ្ឋាន: ភូមិចំការចេក ឃុំស៊ុង ស្រុកសំឡូត ខេត្តបាត់ដំបង ព្រះរាជាណាចក្រកម្ពុជា</p>
+                    </div>
+                </div>
+                
+                <div class="global-copyright">
+                    <p><strong>Developed & Designed by My Langdy - ICT Teacher🧑‍💻</strong></p>
+                    <p class="copyright-icon">
+                        <i class="fas fa-code"></i> វែបសាយអនុវិទ្យាល័យសាមគ្គី © 2025
+                    </p>
+                </div>
+            `
+                };
+
+                return templates[section] || templates.home;
+            }
+
+            initializeHomeChart() {
+                const canvas = document.getElementById('homeStudentsChart');
+                if (!canvas) return;
+
+                if (AppState.chartInstance) {
+                    AppState.chartInstance.destroy();
+                }
+
+                const ctx = canvas.getContext('2d');
+                AppState.chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2020-2021', '2021-2022', '2022-2023', '2023-2024', '2024-2025'],
+                        datasets: [
+                            {
+                                label: 'សរុបសិស្ស (នាក់)',
+                                data: [357, 394, 381, 383, 390],
+                                backgroundColor: '#28a745',
+                                borderColor: '#1f8b3c',
+                                borderWidth: 2,
+                                borderRadius: 5
+                            },
+                            {
+                                label: 'ស្រី (នាក់)',
+                                data: [184, 213, 221, 222, 201],
+                                backgroundColor: '#1565C0',
+                                borderColor: '#104d9e',
+                                borderWidth: 2,
+                                borderRadius: 5
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'ចំនួនសិស្ស (នាក់)',
+                                    font: {
+                                        family: "'Battambang', sans-serif",
+                                        size: 14
+                                    }
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'ឆ្នាំសិក្សា',
+                                    font: {
+                                        family: "'Battambang', sans-serif",
+                                        size: 14
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        family: "'Battambang', sans-serif",
+                                        size: 14
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'ស្ថិតិសិស្សតាមឆ្នាំ',
+                                font: {
+                                    family: "'Battambang', sans-serif",
+                                    size: 16,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            async initializeCalendar() {
+                const calendar = new KhmerCalendarController();
+                await calendar.init();
+            }
+
+            closeNavbar() {
+                if (window.innerWidth <= 768 && this.navbarCollapse && this.navbarCollapse.classList.contains('show')) {
+                    const bsCollapse = bootstrap.Collapse.getInstance(this.navbarCollapse);
+                    if (bsCollapse) {
+                        bsCollapse.hide();
+                    }
+                }
+            }
+
+            scrollToContent() {
+                const headerHeight = document.querySelector('.header-bar').offsetHeight;
+                window.scrollTo({
+                    top: this.contentContainer.offsetTop - headerHeight - 10,
+                    behavior: 'smooth'
+                });
+            }
+
+            toggleSlideshow(section) {
+                const slideshow = document.querySelector('.slideshow-container');
+                if (!slideshow) return;
+
+                if (section === 'home') {
+                    slideshow.classList.remove('hidden');
+                } else {
+                    slideshow.classList.add('hidden');
+                }
+            }
+        }
+
+        async function fetchSheetNames() {
+            try {
+                const response = await fetch('/api/sheets?action=list');
+
+                if (response.status === 429) {
+                    throw new Error('កំពុងមានអ្នកប្រើប្រាស់ច្រើនពេក។ សូមព្យាយាមម្តងទៀតក្នុងរយៈពេល ១ នាទី។');
+                }
+
+                if (!response.ok) {
+                    throw new Error('មិនអាចទាញយកឈ្មោះស៊ីតបានទេ');
+                }
+
+                const data = await response.json();
+                return data.sheets || [];
+            } catch (error) {
+                console.error('Error fetching sheet names:', error);
+                return [];
+            }
+        }
+
+        // ជំនួស function fetchSheetData ចាស់ដោយ function ថ្មីនេះ:
+        async function fetchSheetData(sheetName) {
+            try {
+                // ប្រើ API route ថ្មីជំនួសវិញ
+                const response = await fetch(`/api/sheets?sheet=${encodeURIComponent(sheetName)}`);
+
+                if (response.status === 429) {
+                    throw new Error('កំពុងមានអ្នកប្រើប្រាស់ច្រើនពេក។ សូមព្យាយាមម្តងទៀតក្នុងរយៈពេល ១ នាទី។');
+                }
+
+                if (!response.ok) {
+                    throw new Error('មិនអាចទាញយកទិន្នន័យបានទេ');
+                }
+
+                const data = await response.json();
+                return data.values || [];
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                throw error;
+            }
+        }
+
+
+        // បន្ថែម Data Cache class
+        class DataCache {
+            constructor() {
+                this.cache = new Map();
+                this.cacheDuration = 5 * 60 * 1000; // 5 minutes
+            }
+
+            async getData(sheetName) {
+                const cached = this.cache.get(sheetName);
+                if (cached && Date.now() - cached.timestamp < this.cacheDuration) {
+                    return cached.data;
+                }
+
+                const data = await fetchSheetData(sheetName);
+                this.cache.set(sheetName, {
+                    data: data,
+                    timestamp: Date.now()
+                });
+
+                return data;
+            }
+        }
+
+        const dataCache = new DataCache();
+
+        // ប្រើ cache ក្នុងការហៅ API
+        async function loadStudentData(month) {
+            return await dataCache.getData(month);
+        }
+
+
+        function displayStudentDetails(sheetData, studentId, month) {
+            const studentDetails = document.getElementById('studentDetails');
+            const headers = sheetData[0] || [];
+            const studentData = sheetData.find(row => row[0] === studentId);
+
+            if (!studentData) {
+                studentDetails.innerHTML = `<p class="error-message">មិនមានទិន្នន័យសម្រាប់សិស្សនេះក្នុងខែ ${month}</p>`;
+                return;
+            }
+
+            const rank = parseInt(studentData[28]) || 0;
+            const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
+
+            const studentInfo = `
+                <div class="student-info">
+                    <h3><i class="fas fa-user-circle"></i> ${studentData[1] || 'មិនមានឈ្មោះ'}</h3>
+                    <p><strong><i class="fas fa-id-card"></i> អត្តលេខ:</strong> ${studentData[0]}</p>
+                    <p><strong><i class="fas fa-venus-mars"></i> ភេទ:</strong> ${studentData[2] || 'មិនមាន'}</p>
+                    <p><strong><i class="fas fa-school"></i> ថ្នាក់:</strong> ${studentData[3] || 'មិនមាន'}</p>
+                </div>
+            `;
+
+            const scoresTable = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>មុខវិជ្ជា</th>
+                            <th>ពិន្ទុ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${headers.slice(4, 25).map((subject, index) => `
+                            <tr>
+                                <td>${subject || 'មិនមាន'}</td>
+                                <td>${studentData[4 + index] || '-'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            const aggregateInfo = `
+                <div class="aggregate-info">
+                    <p><strong><i class="fas fa-plus-circle"></i> ពិន្ទុសរុប:</strong> ${studentData[25] || '-'}</p>
+                    <p><strong><i class="fas fa-chart-line"></i> មធ្យមភាគ:</strong> ${studentData[26] || '-'}</p>
+                    <p><strong><i class="fas fa-star"></i> និទ្ទេសរួម:</strong> ${studentData[27] || '-'}</p>
+                    <p><strong><i class="fas fa-trophy"></i> ចំណាត់ថ្នាក់:</strong> <span class="rank ${rankClass}">${studentData[28] || '-'}</span></p>
+                </div>
+            `;
+
+            studentDetails.innerHTML = `
+                <h2>ព័ត៌មានលម្អិតរបស់សិស្ស - ខែ ${month}</h2>
+                ${studentInfo}
+                ${scoresTable}
+                ${aggregateInfo}
+            `;
+
+            const popupMonthSelect = document.getElementById('popupMonthSelect');
+            if (popupMonthSelect) {
+                popupMonthSelect.value = month;
+            }
+        }
+
+        async function displayAttendanceDetails(studentId, studentClass, month) {
+            const attendanceDetails = document.getElementById('attendanceDetails');
+            const attendanceSheet = `Att-${month}`;
+
+            attendanceDetails.innerHTML = '<div style="padding: 20px; text-align: center;"><i class="fas fa-spinner fa-spin fa-2x" style="color: var(--primary-green);"></i><p style="margin-top: 10px;">កំពុងផ្ទុកទិន្នន័យវត្តមាន...</p></div>';
+            attendanceDetails.style.display = 'block';
+
+            const data = await fetchSheetData(attendanceSheet);
+
+            const headers = data[0] || [];
+            const studentData = data.find(row => row[0] === studentId && row[3] === studentClass);
+
+            if (!studentData || headers.length === 0) {
+                attendanceDetails.innerHTML = `<p class="error-message"><i class="fas fa-exclamation-circle"></i> មិនមានទិន្នន័យវត្តមានសម្រាប់សិស្សនេះក្នុងខែ ${month}</p>`;
+                return;
+            }
+
+            const attendanceList = headers.slice(4).map((header, index) => {
+                const attendanceValue = studentData[4 + index];
+                let status = '-';
+                let className = '';
+
+                if (attendanceValue === '1') {
+                    status = 'មករៀន';
+                    className = 'attendance-present';
+                } else if (attendanceValue === '0') {
+                    status = 'គ្មានច្បាប់';
+                    className = 'attendance-absent';
+                } else if (attendanceValue === '3') {
+                    status = 'សុំច្បាប់';
+                    className = 'attendance-excused';
+                }
+
+                return `
+                    <div class="attendance-item">
+                        <span class="attendance-date"><i class="fas fa-calendar-day"></i> ${header}</span>
+                        <span class="attendance-status ${className}">${status}</span>
+                    </div>
+                `;
+            }).join('');
+
+            attendanceDetails.innerHTML = `
+                <h3><i class="fas fa-clipboard-check"></i> វត្តមានសិស្ស - ខែ ${month}</h3>
+                <div class="attendance-list">
+                    ${attendanceList}
+                </div>
+            `;
+        }
+
+        function initializePopupHandlers() {
+            const popup = document.getElementById('studentPopup');
+            const closePopup = document.getElementById('closePopup');
+            const closePopupBtn = document.getElementById('closePopupBtn');
+            const attendanceBtn = document.getElementById('attendanceBtn');
+            const popupMonthSelect = document.getElementById('popupMonthSelect');
+
+            closePopup.addEventListener('click', () => {
+                popup.classList.remove('show');
+                const attendanceDetails = document.getElementById('attendanceDetails');
+                if (attendanceDetails) attendanceDetails.style.display = 'none';
+            });
+
+            closePopupBtn.addEventListener('click', () => {
+                popup.classList.remove('show');
+                const attendanceDetails = document.getElementById('attendanceDetails');
+                if (attendanceDetails) attendanceDetails.style.display = 'none';
+            });
+
+            popup.addEventListener('click', (e) => {
+                if (e.target === popup) {
+                    popup.classList.remove('show');
+                    const attendanceDetails = document.getElementById('attendanceDetails');
+                    if (attendanceDetails) attendanceDetails.style.display = 'none';
+                }
+            });
+
+            attendanceBtn.addEventListener('click', async () => {
+                if (!AppState.currentMonth) {
+                    const attendanceDetails = document.getElementById('attendanceDetails');
+                    attendanceDetails.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle"></i> សូមជ្រើសរើសខែជាមុនសិន។</p>';
+                    attendanceDetails.style.display = 'block';
+                    return;
+                }
+                await displayAttendanceDetails(AppState.currentStudentId, AppState.currentStudentClass, AppState.currentMonth);
+            });
+
+            popupMonthSelect.addEventListener('change', async () => {
+                const selectedMonth = popupMonthSelect.value;
+                if (!selectedMonth) return;
+
+                AppState.currentMonth = selectedMonth;
+                const data = await fetchSheetData(selectedMonth);
+                displayStudentDetails(data, AppState.currentStudentId, selectedMonth);
+                const attendanceDetails = document.getElementById('attendanceDetails');
+                if (attendanceDetails) attendanceDetails.style.display = 'none';
+            });
+        }
+
+        // 📅 Khmer Calendar Controller
+        class KhmerCalendarController {
+            constructor() {
+                this.currentDate = new Date();
+                this.events = [];
+                this.khmerMonths = [
+                    'មករា', 'កុម្ភៈ', 'មីនា', 'មេសា', 'ឧសភា', 'មិថុនា',
+                    'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'
+                ];
+                this.khmerDays = ['អាទិត្យ', 'ចន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហស្បតិ៍', 'សុក្រ', 'សៅរ៍'];
+            }
+
+            async init() {
+                await this.loadEvents();
+                this.setupEventListeners();
+                this.renderCalendar();
+            }
+
+            async loadEvents() {
+                try {
+                    const data = await fetchSheetData('Calendar');
+                    if (data.length > 1) {
+                        this.events = data.slice(1).map(row => ({
+                            title: row[0],
+                            date: this.parseDate(row[1]),
+                            description: row[2] || '',
+                            type: row[3] || 'event' // 'holiday' or 'event'
+                        })).filter(event => event.date); // Remove invalid dates
+                    }
+                } catch (error) {
+                    console.error('Error loading calendar events:', error);
+                }
+            }
+
+            parseDate(dateStr) {
+                if (!dateStr) return null;
+                const parts = dateStr.split('-');
+                if (parts.length !== 3) return null;
+
+                const day = parseInt(parts[0]);
+                const month = parseInt(parts[1]) - 1;
+                const year = parseInt(parts[2]);
+
+                if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+
+                return new Date(year, month, day);
+            }
+
+            setupEventListeners() {
+                const prevBtn = document.getElementById('prevMonth');
+                const nextBtn = document.getElementById('nextMonth');
+                const todayBtn = document.getElementById('todayBtn');
+
+                if (prevBtn) prevBtn.addEventListener('click', () => this.previousMonth());
+                if (nextBtn) nextBtn.addEventListener('click', () => this.nextMonth());
+                if (todayBtn) todayBtn.addEventListener('click', () => this.goToToday());
+
+                const modal = document.getElementById('eventModal');
+                const closeBtn = document.getElementById('eventModalClose');
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => modal.classList.remove('show'));
+                }
+
+                if (modal) {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) modal.classList.remove('show');
+                    });
+                }
+            }
+
+            previousMonth() {
+                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                this.renderCalendar();
+            }
+
+            nextMonth() {
+                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                this.renderCalendar();
+            }
+
+            goToToday() {
+                this.currentDate = new Date();
+                this.renderCalendar();
+            }
+
+
+
+            renderCalendar() {
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+
+                const title = document.getElementById('calendarTitle');
+                if (title) {
+                    title.textContent = `${this.khmerMonths[month]} ${year}`;
+                }
+
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const prevLastDay = new Date(year, month, 0);
+
+                const firstDayOfWeek = firstDay.getDay();
+                const lastDateOfMonth = lastDay.getDate();
+                const prevLastDate = prevLastDay.getDate();
+
+                let calendarHTML = '';
+
+                // Day headers
+                this.khmerDays.forEach((day, index) => {
+                    const isSunday = index === 0 ? 'sunday' : '';
+                    calendarHTML += `<div class="calendar-day-header ${isSunday}">${day}</div>`;
+                });
+
+                // Previous month days
+                for (let i = firstDayOfWeek; i > 0; i--) {
+                    const date = new Date(year, month - 1, prevLastDate - i + 1);
+                    calendarHTML += this.renderDay(date, true);
+                }
+
+                // Current month days
+                for (let day = 1; day <= lastDateOfMonth; day++) {
+                    const date = new Date(year, month, day);
+                    calendarHTML += this.renderDay(date, false);
+                }
+
+                // Next month days
+                const remainingCells = 42 - (firstDayOfWeek + lastDateOfMonth);
+                for (let day = 1; day <= remainingCells; day++) {
+                    const date = new Date(year, month + 1, day);
+                    calendarHTML += this.renderDay(date, true);
+                }
+
+                const grid = document.getElementById('calendarGrid');
+                if (grid) grid.innerHTML = calendarHTML;
+
+                // Render events list
+                this.renderEventsList();
+
+                // Add click event listeners to days
+                document.querySelectorAll('.calendar-day').forEach(dayEl => {
+                    dayEl.addEventListener('click', () => {
+                        const dateStr = dayEl.dataset.date;
+                        if (dateStr) {
+                            const date = new Date(dateStr);
+                            this.showDayEvents(date);
+                        }
+                    });
+                });
+            }
+
+            renderDay(date, isOtherMonth) {
+                const today = new Date();
+                const isToday = date.toDateString() === today.toDateString();
+
+                const dayEvents = this.getEventsForDate(date);
+                const hasHoliday = dayEvents.some(e => e.type === 'holiday');
+                const hasEvent = dayEvents.some(e => e.type === 'event');
+
+                let classes = 'calendar-day';
+                if (isOtherMonth) classes += ' other-month';
+                if (isToday) classes += ' today';
+                if (hasHoliday) classes += ' holiday';
+                else if (hasEvent) classes += ' event';
+
+                let eventsHTML = '';
+                dayEvents.forEach(event => {
+                    const badgeClass = event.type === 'holiday' ? 'holiday' : 'event';
+                    eventsHTML += `<div class="event-badge ${badgeClass}">${event.title}</div>`;
+                });
+
+                return `
+        <div class="${classes}" data-date="${date.toISOString()}">
+            <div class="day-number">${date.getDate()}</div>
+            <div class="day-events">${eventsHTML}</div>
+        </div>
+    `;
+            }
+
+            getEventsForDate(date) {
+                return this.events.filter(event => {
+                    if (!event.date) return false;
+                    return event.date.toDateString() === date.toDateString();
+                });
+            }
+
+            showDayEvents(date) {
+                const events = this.getEventsForDate(date);
+
+                if (events.length === 0) return;
+
+                const modal = document.getElementById('eventModal');
+                const title = document.getElementById('eventModalTitle');
+                const dateEl = document.getElementById('eventModalDate');
+                const description = document.getElementById('eventModalDescription');
+
+                const khmerDate = `${date.getDate()} ${this.khmerMonths[date.getMonth()]} ${date.getFullYear()}`;
+                // ✅ កែត្រង់នេះ - date.getDay() ត្រលប់ 0-6 (អាទិត្យ=0, ចន្ទ=1, ..., សៅរ៍=6)
+                const dayOfWeek = this.khmerDays[date.getDay()];
+
+                title.textContent = events[0].title;
+                dateEl.innerHTML = `<i class="fas fa-calendar-alt"></i> ${dayOfWeek}, ${khmerDate}`;
+                description.textContent = events[0].description;
+
+                modal.classList.add('show');
+            }
+            renderEventsList() {
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+
+                const monthEvents = this.events.filter(event => {
+                    if (!event.date) return false;
+                    return event.date.getMonth() === month && event.date.getFullYear() === year;
+                }).sort((a, b) => a.date - b.date);
+
+                const eventsList = document.getElementById('eventsList');
+
+                if (!eventsList) return;
+
+                if (monthEvents.length === 0) {
+                    eventsList.innerHTML = `
+            <div class="no-events">
+                <i class="fas fa-calendar-times"></i>
+                <p>មិនមានព្រឹត្តិការណ៍សម្រាប់ខែនេះទេ</p>
+            </div>
+        `;
+                    return;
+                }
+
+                let eventsHTML = '';
+
+                monthEvents.forEach(event => {
+                    const day = event.date.getDate();
+                    const monthName = this.khmerMonths[event.date.getMonth()];
+                    const typeClass = event.type === 'holiday' ? 'holiday' : 'event';
+                    const typeName = event.type === 'holiday' ? 'ថ្ងៃឈប់សម្រាក' : 'ព្រឹត្តិការណ៍';
+
+                    eventsHTML += `
+            <div class="event-list-item ${typeClass}">
+                <div class="event-date-box ${typeClass}">
+                    <div class="event-date-day">${day}</div>
+                    <div class="event-date-month">${monthName}</div>
+                </div>
+                <div class="event-info">
+                    <div class="event-info-title">
+                        ${event.title}
+                        <span class="event-type-badge ${typeClass}">${typeName}</span>
+                    </div>
+                    <div class="event-info-desc">${event.description}</div>
+                </div>
+            </div>
+        `;
+                });
+
+                eventsList.innerHTML = eventsHTML;
+            }
+        }
+
+
+        class App {
+            constructor() {
+                this.slideshow = null;
+                this.navigation = null;
+                this.notification = null;
+            }
+
+            async init() {
+                this.slideshow = new SlideshowController();
+                this.slideshow.init();
+
+                this.navigation = new NavigationController();
+                this.navigation.init();
+
+                this.notification = new NotificationController();
+                await this.notification.init();
+
+                initializePopupHandlers();
+
+                window.addEventListener('resize', () => {
+                    if (AppState.chartInstance) {
+                        AppState.chartInstance.resize();
+                    }
+                });
+
+                window.addEventListener('beforeunload', () => {
+                    this.cleanup();
+                });
+
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        this.slideshow.pause();
+                    } else {
+                        this.slideshow.resume();
+                    }
+                });
+            }
+
+            cleanup() {
+                if (AppState.chartInstance) {
+                    AppState.chartInstance.destroy();
+                    AppState.chartInstance = null;
+                }
+
+                if (this.slideshow) {
+                    this.slideshow.destroy();
+                }
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                const app = new App();
+                app.init();
+            });
+        } else {
+            const app = new App();
+            app.init();
+        }
+    </script>
+
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt"
+        style="display: none; position: fixed; bottom: 80px; left: 20%; transform: translateX(-50%); background: linear-gradient(135deg, #2C6E49, #4C956C); color: white; padding: 15px 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); z-index: 9999; max-width: 90%; text-align: center; animation: slideUpPrompt 0.4s ease;">
+        <div style="margin-bottom: 10px;">
+            <i class="fas fa-mobile-alt" style="font-size: 2rem;"></i>
+        </div>
+        <p style="margin: 0 0 3px 0; font-size: 1rem; font-weight: 400;">ដំឡើងជាកម្មវិធី</p>
+        <p style="margin: 0 0 3px 0; font-size: 0.9rem; opacity: 0.95;">ងាយស្រួលប្រើប្រាស់ និងលឿនជាងមុន!</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="installBtn"
+                style="background: white; color: #2C6E49; border: none; padding: 5px 10px; border-radius: 8px; font-weight: 400; cursor: pointer; font-family: 'Battambang', sans-serif;">
+                <i class="fas fa-download"></i> ដំឡើង
+            </button>
+            <button id="dismissInstallBtn"
+                style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white; padding: 5px 10px; border-radius: 8px; font-weight: 400; cursor: pointer; font-family: 'Battambang', sans-serif;">
+                មិនទាន់
+            </button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideUpPrompt {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+    </style>
+
+    <script>
+        // PWA Installation & Service Worker Registration
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+        const dismissBtn = document.getElementById('dismissInstallBtn');
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered successfully:', registration.scope);
+
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New content available, notify user
+                                    if (confirm('មានកំណែថ្មី! តើចង់ធ្វើបច្ចុប្បន្នភាពឥឡូវនេះទេ?')) {
+                                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // Capture install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // Check if user previously dismissed
+            const dismissed = localStorage.getItem('installPromptDismissed');
+            const dismissedTime = localStorage.getItem('installPromptDismissedTime');
+
+            // Show prompt if not dismissed, or if 7 days passed
+            if (!dismissed || (dismissedTime && Date.now() - parseInt(dismissedTime) > 7 * 24 * 60 * 60 * 1000)) {
+                setTimeout(() => {
+                    installPrompt.style.display = 'block';
+                }, 3000); // Show after 3 seconds
+            }
+        });
+
+        // Install button click
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (!deferredPrompt) {
+                    alert('មិនអាចដំឡើងបានទេ។ សូមប្រើប្រាស់តាមរយៈ browser!');
+                    return;
+                }
+
+                installPrompt.style.display = 'none';
+                deferredPrompt.prompt();
+
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to install prompt: ${outcome}`);
+
+                if (outcome === 'accepted') {
+                    localStorage.removeItem('installPromptDismissed');
+                    localStorage.removeItem('installPromptDismissedTime');
+                }
+
+                deferredPrompt = null;
+            });
+        }
+
+        // Dismiss button click
+        if (dismissBtn) {
+            dismissBtn.addEventListener('click', () => {
+                installPrompt.style.display = 'none';
+                localStorage.setItem('installPromptDismissed', 'true');
+                localStorage.setItem('installPromptDismissedTime', Date.now().toString());
+            });
+        }
+
+        // Track successful installation
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA installed successfully!');
+            localStorage.removeItem('installPromptDismissed');
+            localStorage.removeItem('installPromptDismissedTime');
+
+            // Optional: Show success message
+            const successMsg = document.createElement('div');
+            successMsg.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #28a745; color: white; padding: 15px 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10000; font-family: "Battambang", sans-serif;';
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> ដំឡើងបានជោគជ័យ!';
+            document.body.appendChild(successMsg);
+
+            setTimeout(() => {
+                successMsg.remove();
+            }, 3000);
+        });
+
+        // Check if running as installed PWA
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('Running as installed PWA');
+            // Add any PWA-specific behavior here
+        }
+    </script>
+</body>
+
+</html>
